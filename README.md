@@ -31,3 +31,14 @@
 - POST Users (Later once we build accounts)
 
 #### PUT Requests 
+
+- PUT Questions (to specific ID)
+- PUT Assesments (to specific ID) Questions
+- PUT Training (to specific ID) Questions
+- PUT Tournament (to specific ID) Questions
+- PUT Courses (to specific ID) Questions
+- PUT Sensei (to specific ID) Questions 
+- PUT Configuration (to specific ID) Questions
+- PUT Metrics & Reports (to specific ID) Questions
+- PUT Administration (to specific ID) Questions 
+- PUT Users (to specific ID) (Later once we build accounts)
