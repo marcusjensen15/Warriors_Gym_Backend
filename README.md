@@ -3,6 +3,8 @@
 
 ### Key Endpoints to build
 
+#### GET Requests 
+
 - GET all Questions
 - GET all Assesments Questions
 - GET all Training Questions
@@ -15,4 +17,17 @@
 - GET all Users (Later once we build accounts)
 
 
+#### POST Requests 
 
+- POST Questions
+- POST Assesments Questions
+- POST Training Questions
+- POST Tournament Questions
+- POST Courses Questions
+- POST Sensei Questions 
+- POST Configuration Questions
+- POST Metrics & Reports Questions
+- POST Administration Questions 
+- POST Users (Later once we build accounts)
+
+#### PUT Requests 
