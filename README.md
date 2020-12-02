@@ -1,4 +1,5 @@
-## This is the backend repository for Warriors Gym. [Here is the link for the Warriors Gym Frontend Repo](google.com)
+## Backend Repo: Warriors Gym. 
+## [Here is the link for the Warriors Gym Frontend Repo](google.com)
 
 
 ### Key Endpoints to build
