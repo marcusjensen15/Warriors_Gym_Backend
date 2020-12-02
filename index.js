@@ -49,4 +49,10 @@ app.get('/metricsreportsquestions', (req, res) => {
 
 });
 
+app.get('/users', (req, res) => {
+
+    res.send('hello world users');
+
+});
+
 app.listen(3000, () => console.log('listening on port 3000'));
