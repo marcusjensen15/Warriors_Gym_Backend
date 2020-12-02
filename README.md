@@ -42,3 +42,16 @@
 - PUT Metrics & Reports (to specific ID) Questions
 - PUT Administration (to specific ID) Questions 
 - PUT Users (to specific ID) (Later once we build accounts)
+
+#### DELETE Requests 
+
+- DELETE Questions (to specific ID)
+- DELETE Assesments (to specific ID) Questions
+- DELETE Training (to specific ID) Questions
+- DELETE Tournament (to specific ID) Questions
+- DELETE Courses (to specific ID) Questions
+- DELETE Sensei (to specific ID) Questions 
+- DELETE Configuration (to specific ID) Questions
+- DELETE Metrics & Reports (to specific ID) Questions
+- DELETE Administration (to specific ID) Questions 
+- DELETE Users (to specific ID) (Later once we build accounts)
