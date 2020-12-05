@@ -101,6 +101,14 @@ app.get('/configurationquestions', (req, res) => {
 
 });
 
+app.get('/configurationquestions/:id', (req, res) => {
+
+    res.send(`hello world configuration questions ${req.params.id}`);
+
+});
+
+
+
 //Metrics Reports questions requests
 
 app.get('/metricsreportsquestions', (req, res) => {
@@ -109,6 +117,15 @@ app.get('/metricsreportsquestions', (req, res) => {
 
 });
 
+app.get('/metricsreportsquestions/:id', (req, res) => {
+
+    res.send(`hello world metricsreports questions ${req.params.id}`);
+
+});
+
+
+
+
 //Users requests
 
 app.get('/users', (req, res) => {
@@ -116,6 +133,14 @@ app.get('/users', (req, res) => {
     res.send('hello world users');
 
 });
+
+app.get('/users/:id', (req, res) => {
+
+    res.send(`hello world users ${req.params.id}`);
+
+});
+
+
 
 const port = process.env.PORT || 3000;
 
