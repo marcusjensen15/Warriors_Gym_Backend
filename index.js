@@ -1,5 +1,23 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
+
+const assessmentsQuestions = [];
+
+const trainingQuestions = [];
+
+const tournamentQuestions = [];
+
+const coursesQuestions = [];
+
+const senseiQuestions = [];
+
+const configurationQuestions = [];
+
+const metricsReportsQuestions = [];
+
+const usersArray = [];
+
 
 
 //All questions request
@@ -25,7 +43,17 @@ app.get('/assesmentsquestions/:id', (req, res) => {
 
 });
 
+app.post('/assesmentsquestions', (req, res) => {
 
+    const assessmentQuestion = {
+        id: assessmentsQuestions.length + 1,
+        name: req.body.name
+    };
+
+    assessmentsQuestions.push(assessmentQuestion);
+    res.send(assessmentQuestion);
+
+});
 
 //Training questions requests
 
@@ -38,6 +66,18 @@ app.get('/trainingquestions', (req, res) => {
 app.get('/trainingquestions/:id', (req, res) => {
 
     res.send(`hello world training questions ${req.params.id}`);
+
+});
+
+app.post('/trainingquestions', (req, res) => {
+
+    const trainingQuestion = {
+        id: trainingQuestions.length + 1,
+        name: req.body.name
+    };
+
+    trainingQuestions.push(trainingQuestion);
+    res.send(trainingQuestion);
 
 });
 
@@ -54,6 +94,18 @@ app.get('/tournamentquestions', (req, res) => {
 app.get('/tournamentquestions/:id', (req, res) => {
 
     res.send(`hello world tournament questions ${req.params.id}`);
+
+});
+
+app.post('/tournamentquestions', (req, res) => {
+
+    const tournamentQuestion = {
+        id: tournamentQuestions.length + 1,
+        name: req.body.name
+    };
+
+    tournamentQuestions.push(tournamentQuestion);
+    res.send(tournamentQuestion);
 
 });
 
@@ -74,7 +126,17 @@ app.get('/coursesquestions/:id', (req, res) => {
 
 });
 
+app.post('/coursesquestions', (req, res) => {
 
+    const coursesQuestion = {
+        id: coursesQuestions.length + 1,
+        name: req.body.name
+    };
+
+    coursesQuestions.push(coursesQuestion);
+    res.send(coursesQuestion);
+
+});
 
 
 //Sensei questions requests
@@ -91,6 +153,17 @@ app.get('/senseiquestions/:id', (req, res) => {
 
 });
 
+app.post('/senseiquestions', (req, res) => {
+
+    const senseiQuestion = {
+        id: senseiQuestions.length + 1,
+        name: req.body.name
+    };
+
+    senseiQuestions.push(senseiQuestion);
+    res.send(senseiQuestion);
+
+});
 
 
 //Configuration questions requests
@@ -104,6 +177,18 @@ app.get('/configurationquestions', (req, res) => {
 app.get('/configurationquestions/:id', (req, res) => {
 
     res.send(`hello world configuration questions ${req.params.id}`);
+
+});
+
+app.post('/configurationquestions', (req, res) => {
+
+    const configurationQuestion = {
+        id: configurationQuestions.length + 1,
+        name: req.body.name
+    };
+
+    aconfigurationQuestions.push(configurationQuestion);
+    res.send(configurationQuestion);
 
 });
 
@@ -123,6 +208,18 @@ app.get('/metricsreportsquestions/:id', (req, res) => {
 
 });
 
+app.post('/metricsreportsquestions', (req, res) => {
+
+    const metricsreportsQuestion = {
+        id: metricsreportsQuestions.length + 1,
+        name: req.body.name
+    };
+
+    metricsreportsQuestions.push(metricsreportsQuestion);
+    res.send(metricsreportsQuestion);
+
+});
+
 
 
 
@@ -137,6 +234,18 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
 
     res.send(`hello world users ${req.params.id}`);
+
+});
+
+app.post('users', (req, res) => {
+
+    const user = {
+        id: users.length + 1,
+        name: req.body.name
+    };
+
+    users.push(user);
+    res.send(user);
 
 });
 
