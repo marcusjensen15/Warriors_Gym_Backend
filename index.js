@@ -35,6 +35,14 @@ app.get('/trainingquestions', (req, res) => {
 
 });
 
+app.get('/trainingquestions/:id', (req, res) => {
+
+    res.send(`hello world training questions ${req.params.id}`);
+
+});
+
+
+
 //Tournament questions requests
 
 app.get('/tournamentquestions', (req, res) => {
@@ -42,6 +50,15 @@ app.get('/tournamentquestions', (req, res) => {
     res.send('hello world tournament questions');
 
 });
+
+app.get('/tournamentquestions/:id', (req, res) => {
+
+    res.send(`hello world tournament questions ${req.params.id}`);
+
+});
+
+
+
 
 //Courses questions requests
 
@@ -51,6 +68,15 @@ app.get('/coursesquestions', (req, res) => {
 
 });
 
+app.get('/coursesquestions/:id', (req, res) => {
+
+    res.send(`hello world courses questions ${req.params.id}`);
+
+});
+
+
+
+
 //Sensei questions requests
 
 app.get('/senseiquestions', (req, res) => {
@@ -58,6 +84,14 @@ app.get('/senseiquestions', (req, res) => {
     res.send('hello world sensei questions');
 
 });
+
+app.get('/senseiquestions/:id', (req, res) => {
+
+    res.send(`hello world sensei questions ${req.params.id}`);
+
+});
+
+
 
 //Configuration questions requests
 
