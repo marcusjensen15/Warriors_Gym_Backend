@@ -1,7 +1,8 @@
 ## Backend Repo: Warriors Gym. 
 ## [Here is the link for the Warriors Gym Frontend Repo](google.com)
 
-### to run application, use `nodemon index.js`
+### to run application, use `nodemon index.js`. This will auto start/stop the server.
+
 ### Key Endpoints to build
 
 #### GET Requests 
