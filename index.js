@@ -102,7 +102,7 @@ app.post('/trainingquestions', (req, res) => {
 
 app.get('/tournamentquestions', (req, res) => {
 
-    res.send('hello world tournament questions');
+    res.send(tournamentQuestions);
 
 });
 
@@ -116,7 +116,11 @@ app.post('/tournamentquestions', (req, res) => {
 
     const tournamentQuestion = {
         id: tournamentQuestions.length + 1,
-        name: req.body.name
+        question: req.body.question,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
     };
 
     tournamentQuestions.push(tournamentQuestion);
