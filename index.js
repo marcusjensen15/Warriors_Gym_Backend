@@ -229,7 +229,7 @@ app.post('/configurationquestions', (req, res) => {
 
 app.get('/metricsreportsquestions', (req, res) => {
 
-    res.send('hello world metricsreports questions');
+    res.send(metricsReportsQuestions);
 
 });
 
@@ -242,11 +242,14 @@ app.get('/metricsreportsquestions/:id', (req, res) => {
 app.post('/metricsreportsquestions', (req, res) => {
 
     const metricsreportsQuestion = {
-        id: metricsreportsQuestions.length + 1,
-        name: req.body.name
+        id: metricsReportsQuestions.length + 1,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
     };
 
-    metricsreportsQuestions.push(metricsreportsQuestion);
+    metricsReportsQuestions.push(metricsreportsQuestion);
     res.send(metricsreportsQuestion);
 
 });
@@ -258,7 +261,7 @@ app.post('/metricsreportsquestions', (req, res) => {
 
 app.get('/users', (req, res) => {
 
-    res.send('hello world users');
+    res.send(usersArray);
 
 });
 
@@ -268,14 +271,16 @@ app.get('/users/:id', (req, res) => {
 
 });
 
-app.post('users', (req, res) => {
+app.post('/users', (req, res) => {
 
     const user = {
-        id: users.length + 1,
-        name: req.body.name
+        id: usersArray.length + 1,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
     };
 
-    users.push(user);
+    usersArray.push(user);
     res.send(user);
 
 });
