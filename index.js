@@ -1,22 +1,29 @@
 const express = require('express');
 const app = express();
-app.use(express.json());
 
-const assessmentsQuestions = [];
 
-const trainingQuestions = [];
+// app.use(express.json());
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+    extended: true
+  }));
 
-const tournamentQuestions = [];
 
-const coursesQuestions = [];
+const assessmentsQuestions = ['assessmentsQuestionstest'];
 
-const senseiQuestions = [];
+const trainingQuestions = ['trainingQuestionstest'];
 
-const configurationQuestions = [];
+const tournamentQuestions = ['tournamentQuestionstest'];
 
-const metricsReportsQuestions = [];
+const coursesQuestions = ['coursesQuestionstest'];
 
-const usersArray = [];
+const senseiQuestions = ['senseiquestions test'];
+
+const configurationQuestions = ['configquestionstest'];
+
+const metricsReportsQuestions = ['metricsreportsquestionstest'];
+
+const usersArray = ['userstesxt'];
 
 
 
@@ -33,7 +40,7 @@ app.get('/allquestions', (req, res) => {
 
 app.get('/assesmentsquestions', (req, res) => {
 
-    res.send('hello world assesments questions');
+    res.send(assessmentsQuestions);
 
 });
 
@@ -45,15 +52,15 @@ app.get('/assesmentsquestions/:id', (req, res) => {
 
 app.post('/assesmentsquestions', (req, res) => {
 
-    const assessmentQuestion = {
+     const assessmentQuestion = {
         id: assessmentsQuestions.length + 1,
-        name: req.body.name
+        question: req.body.question
     };
 
     assessmentsQuestions.push(assessmentQuestion);
-    res.send(assessmentQuestion);
+     res.send(assessmentQuestion);
 
-});
+  });
 
 //Training questions requests
 
