@@ -198,7 +198,7 @@ app.post('/senseiquestions', (req, res) => {
 
 app.get('/configurationquestions', (req, res) => {
 
-    res.send('hello world configuration questions');
+    res.send(configurationQuestions);
 
 });
 
@@ -212,10 +212,13 @@ app.post('/configurationquestions', (req, res) => {
 
     const configurationQuestion = {
         id: configurationQuestions.length + 1,
-        name: req.body.name
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
     };
 
-    aconfigurationQuestions.push(configurationQuestion);
+    configurationQuestions.push(configurationQuestion);
     res.send(configurationQuestion);
 
 });
