@@ -70,7 +70,7 @@ app.post('/assesmentsquestions', (req, res) => {
 
 app.get('/trainingquestions', (req, res) => {
 
-    res.send('hello world training questions');
+    res.send(trainingQuestions);
 
 });
 
@@ -84,7 +84,11 @@ app.post('/trainingquestions', (req, res) => {
 
     const trainingQuestion = {
         id: trainingQuestions.length + 1,
-        name: req.body.name
+        question: req.body.question,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
     };
 
     trainingQuestions.push(trainingQuestion);
