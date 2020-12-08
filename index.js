@@ -135,7 +135,7 @@ app.post('/tournamentquestions', (req, res) => {
 
 app.get('/coursesquestions', (req, res) => {
 
-    res.send('hello world courses questions');
+    res.send(coursesQuestions);
 
 });
 
@@ -149,7 +149,11 @@ app.post('/coursesquestions', (req, res) => {
 
     const coursesQuestion = {
         id: coursesQuestions.length + 1,
-        name: req.body.name
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
+
     };
 
     coursesQuestions.push(coursesQuestion);
