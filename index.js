@@ -166,7 +166,7 @@ app.post('/coursesquestions', (req, res) => {
 
 app.get('/senseiquestions', (req, res) => {
 
-    res.send('hello world sensei questions');
+    res.send(senseiQuestions);
 
 });
 
@@ -180,7 +180,12 @@ app.post('/senseiquestions', (req, res) => {
 
     const senseiQuestion = {
         id: senseiQuestions.length + 1,
-        name: req.body.name
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
+
+
     };
 
     senseiQuestions.push(senseiQuestion);
