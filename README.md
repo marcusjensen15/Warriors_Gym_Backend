@@ -1,7 +1,9 @@
 ## Backend Repo: Warriors Gym. 
 ## [Here is the link for the Warriors Gym Frontend Repo](google.com)
 
-### to run application, use `nodemon index.js`. This will auto start/stop the server.
+### To run application, use `nodemon index.js`. This will auto start/stop the server.
+
+### To test endpoints in Postmand, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected
 
 ### Key Endpoints to build
 
