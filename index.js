@@ -54,7 +54,11 @@ app.post('/assesmentsquestions', (req, res) => {
 
      const assessmentQuestion = {
         id: assessmentsQuestions.length + 1,
-        question: req.body.question
+        question: req.body.question,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
     };
 
     assessmentsQuestions.push(assessmentQuestion);

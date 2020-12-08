@@ -3,7 +3,8 @@
 
 ### To run application, use `nodemon index.js`. This will auto start/stop the server.
 
-### To test endpoints in Postmand, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected
+### To test endpoints in Postmann, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected
+#### With 'Possible Answers' field testing in Postman, send a bunch of different values in different rows all with the key 'possibleAnswers'. The response will be an array of all values.
 
 ### Key Endpoints to build
 
