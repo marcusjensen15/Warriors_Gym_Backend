@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const express = require('express');
 const app = express();
 
@@ -25,7 +26,22 @@ const metricsReportsQuestions = ['metricsreportsquestionstest'];
 
 const usersArray = ['userstesxt'];
 
+// Question validation middleware, will be seperated into another file later
+// When ID gets incorporated into this, we will write validation middleware for it below. For now, number is an int. In production it will likely be a string.
 
+function validateQuestion(question){
+
+    const questionSchema = Joi.object({
+        question: Joi.string().min(10).required(),
+        type: Joi.string().required(),
+        category: Joi.string().required(),
+        possibleAnswers: Joi.array().items(Joi.string()).required(),
+        correctAnswer: Joi.string().required()
+    });
+    
+    return questionSchema.validate(question);
+
+};
 
 //All questions request
 
@@ -60,6 +76,13 @@ app.post('/assesmentsquestions', (req, res) => {
         possibleAnswers: req.body.possibleAnswers,
         correctAnswer: req.body.correctAnswer
     };
+
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
 
     assessmentsQuestions.push(assessmentQuestion);
      res.send(assessmentQuestion);
