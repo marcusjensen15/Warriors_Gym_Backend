@@ -193,6 +193,13 @@ app.post('/coursesquestions', (req, res) => {
 
     };
 
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
     coursesQuestions.push(coursesQuestion);
     res.send(coursesQuestion);
 
