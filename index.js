@@ -232,6 +232,14 @@ app.post('/senseiquestions', (req, res) => {
 
     };
 
+
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
     senseiQuestions.push(senseiQuestion);
     res.send(senseiQuestion);
 
