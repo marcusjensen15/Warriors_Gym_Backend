@@ -43,6 +43,24 @@ function validateQuestion(question){
 
 };
 
+
+// User Validation Middleware. Will need to incorporate addtional logic to check DB if user exists 
+
+function validateUser(user){
+
+    const userSchema = Joi.object({
+        name: Joi.string().required(),
+        email: Joi.string().email({ tlds: { allow: false } }).required(),
+        password: Joi.string().required()
+    });
+    
+    return userSchema.validate(user);
+
+};
+
+
+
+
 //All questions request
 
 
@@ -345,6 +363,13 @@ app.post('/users', (req, res) => {
         email: req.body.email,
         password: req.body.password
     };
+
+    const result = validateUser(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
 
     usersArray.push(user);
     res.send(user);
