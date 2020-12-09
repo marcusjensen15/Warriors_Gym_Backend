@@ -107,6 +107,31 @@ app.post('/assesmentsquestions', (req, res) => {
 
   });
 
+  app.put('/assesmentsquestions/:id', (req,res) => {
+
+    const question = assessmentsQuestions.find(q => q.id === parseInt(req.params.id));
+
+    if (!question) res.status(404).send('The question with that ID was not found within Assessments Questions');
+
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    question.question = req.body.question;
+    question.type = req.body.type;
+    question.category = req.body.category;
+    question.possibleAnswers = req.body.possibleAnswers;
+    question.correctAnswer = req.body.correctAnswer;
+
+    res.send(question);
+  
+
+
+  });
+
 //Training questions requests
 
 app.get('/trainingquestions', (req, res) => {
