@@ -153,6 +153,13 @@ app.post('/tournamentquestions', (req, res) => {
         correctAnswer: req.body.correctAnswer
     };
 
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
     tournamentQuestions.push(tournamentQuestion);
     res.send(tournamentQuestion);
 
