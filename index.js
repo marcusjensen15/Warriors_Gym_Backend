@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({
 
 const assessmentsQuestions = ['assessmentsQuestionstest'];
 
+const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"oink", id:10},  {type:"fred", name:"oinkbeerr", id: 6}];
+
 const trainingQuestions = ['trainingQuestionstest'];
 
 const tournamentQuestions = ['tournamentQuestionstest'];
@@ -63,12 +65,91 @@ function validateUser(user){
 
 //All questions request
 
+//We can narrow all of these down to one route and use different sets of 'params' to indicate different types of questions. Examples below:
+
+//GET specific libray of questions: '/allquestions/:questiontype'. -> will pull all of the questions for type: param question type
+
+//Below is experimental 
+
+
+app.get('/allquestions/:questiontype', (req, res) => {
+
+    const questionType = req.params.questiontype;
+
+    let results = allQuestions.filter(question => {
+        if (question.type === questionType){
+            return question;
+        }
+    });
+
+    if (results.length === 0){
+
+        results = "There are no questions for this category"
+    }
+
+    res.send(results);
+
+});
+
+
+//
+
 
 app.get('/allquestions', (req, res) => {
 
-    res.send('hello world all questions');
+    res.send(allQuestions);
 
 });
+
+app.post('/allquestions', (req,res) => {
+
+    const question = {
+        id: allQuestions.length + 1,
+        question: req.body.question,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
+    };
+
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    allQuestions.push(question);
+     res.send(question);
+
+
+});
+
+//GET a specific question
+
+
+app.get('/allquestions/:questiontype/:id', (req,res) => {
+
+    const questionType = req.params.questiontype;
+    const questionId = req.params.id;
+
+    let result = allQuestions.filter(question => {
+        if (question.type === questionType && question.id == questionId){
+            return question;
+        }
+    });
+
+    if (result.length === 0){
+
+        result = "There is no question with this ID"
+    }
+
+    res.send(result);
+});
+
+
+//Need to write question delete and put routes like above.
+
 
 //Assessments questions requests
 
