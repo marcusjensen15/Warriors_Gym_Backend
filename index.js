@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({
 
 const assessmentsQuestions = ['assessmentsQuestionstest'];
 
+const allQuestions = [{type: "bill", name: "steve"}, {type: "bill", name: "mike"}, {type:"fred", name:"oink"},  {type:"fred", name:"oinkbeerr"}];
+
 const trainingQuestions = ['trainingQuestionstest'];
 
 const tournamentQuestions = ['tournamentQuestionstest'];
@@ -62,6 +64,37 @@ function validateUser(user){
 
 
 //All questions request
+
+//We can narrow all of these down to one route and use different sets of 'params' to indicate different types of questions. Examples below:
+
+//GET specific libray of questions: '/allquestions/:questiontype'. -> will pull all of the questions for type: param question type
+
+//Below is experimental 
+
+
+app.get('/allquestions/:questiontype', (req, res) => {
+
+    const questionType = req.params.questiontype;
+
+    let results = allQuestions.filter(question => {
+        if (question.type === questionType){
+            return question;
+        }
+    });
+
+    if (results.length === 0){
+
+        results = "There are no questions for this category"
+    }
+
+    res.send(results);
+
+});
+
+
+//
+
+
 
 
 app.get('/allquestions', (req, res) => {
