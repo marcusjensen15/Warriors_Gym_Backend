@@ -95,13 +95,39 @@ app.get('/allquestions/:questiontype', (req, res) => {
 //
 
 
-
-
 app.get('/allquestions', (req, res) => {
 
-    res.send('hello world all questions');
+    res.send(allQuestions);
 
 });
+
+app.post('/allquestions', (req,res) => {
+
+    const question = {
+        id: allQuestions.length + 1,
+        question: req.body.question,
+        type: req.body.type,
+        category: req.body.category,
+        possibleAnswers: req.body.possibleAnswers,
+        correctAnswer: req.body.correctAnswer
+    };
+
+    const result = validateQuestion(req.body);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    allQuestions.push(question);
+     res.send(question);
+
+
+});
+
+
+
+
 
 //Assessments questions requests
 
