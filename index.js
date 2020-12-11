@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
 
 const assessmentsQuestions = ['assessmentsQuestionstest'];
 
-const allQuestions = [{type: "bill", name: "steve"}, {type: "bill", name: "mike"}, {type:"fred", name:"oink"},  {type:"fred", name:"oinkbeerr"}];
+const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"oink", id:10},  {type:"fred", name:"oinkbeerr", id: 6}];
 
 const trainingQuestions = ['trainingQuestionstest'];
 
@@ -124,6 +124,30 @@ app.post('/allquestions', (req,res) => {
 
 
 });
+
+//GET a specific question
+
+
+app.get('/allquestions/:questiontype/:id', (req,res) => {
+
+    const questionType = req.params.questiontype;
+    const questionId = req.params.id;
+
+    let result = allQuestions.filter(question => {
+        if (question.type === questionType && question.id == questionId){
+            return question;
+        }
+    });
+
+    if (result.length === 0){
+
+        result = "There is no question with this ID"
+    }
+
+    res.send(result);
+});
+
+
 
 
 
