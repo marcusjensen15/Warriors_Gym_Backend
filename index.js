@@ -1,34 +1,17 @@
 const Joi = require('joi');
 const express = require('express');
 const app = express();
-
-
-// app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
 
+// allQuestions and usersArray is fake data (obviously)
 
-const assessmentsQuestions = ['assessmentsQuestionstest'];
+const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"lalala", id:10},  {type:"fred", name:"howdy", id: 6}];
+const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
 
-const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"oink", id:10},  {type:"fred", name:"oinkbeerr", id: 6}];
-
-const trainingQuestions = ['trainingQuestionstest'];
-
-const tournamentQuestions = ['tournamentQuestionstest'];
-
-const coursesQuestions = ['coursesQuestionstest'];
-
-const senseiQuestions = ['senseiquestions test'];
-
-const configurationQuestions = ['configquestionstest'];
-
-const metricsReportsQuestions = ['metricsreportsquestionstest'];
-
-const usersArray = ['userstesxt'];
-
-// Question validation middleware, will be seperated into another file later
+// validateQuestion middleware, will be seperated into another file later
 // When ID gets incorporated into this, we will write validation middleware for it below. For now, number is an int. In production it will likely be a string.
 
 function validateQuestion(question){
@@ -45,8 +28,7 @@ function validateQuestion(question){
 
 };
 
-
-// User Validation Middleware. Will need to incorporate addtional logic to check DB if user exists 
+// validateUser middleware. Will need to incorporate addtional logic to check DB if user exists. Will also be seperated into another file.
 
 function validateUser(user){
 
@@ -61,16 +43,7 @@ function validateUser(user){
 };
 
 
-
-
-//All questions request
-
-//We can narrow all of these down to one route and use different sets of 'params' to indicate different types of questions. Examples below:
-
-//GET specific libray of questions: '/allquestions/:questiontype'. -> will pull all of the questions for type: param question type
-
-//Below is experimental 
-
+// GET all questions of a given type
 
 app.get('/allquestions/:questiontype', (req, res) => {
 
@@ -91,15 +64,15 @@ app.get('/allquestions/:questiontype', (req, res) => {
 
 });
 
-
-//
-
+// GET all questions in the entire database 
 
 app.get('/allquestions', (req, res) => {
 
     res.send(allQuestions);
 
 });
+
+//POST a new question
 
 app.post('/allquestions', (req,res) => {
 
@@ -122,11 +95,9 @@ app.post('/allquestions', (req,res) => {
     allQuestions.push(question);
      res.send(question);
 
-
 });
 
 //GET a specific question
-
 
 app.get('/allquestions/:questiontype/:id', (req,res) => {
 
@@ -148,33 +119,13 @@ app.get('/allquestions/:questiontype/:id', (req,res) => {
 });
 
 
-//Need to write question delete and put routes like above.
+//PUT a specific question
 
+app.put('/allquestions/:questiontype/:id', (req,res) => {
 
-//Assessments questions requests
+const question = allQuestions.find(q => q.id === parseInt(req.params.id));
 
-app.get('/assesmentsquestions', (req, res) => {
-
-    res.send(assessmentsQuestions);
-
-});
-
-app.get('/assesmentsquestions/:id', (req, res) => {
-
-    res.send(`hello world assesments question ${req.params.id}`);
-
-});
-
-app.post('/assesmentsquestions', (req, res) => {
-
-     const assessmentQuestion = {
-        id: assessmentsQuestions.length + 1,
-        question: req.body.question,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-    };
+if (!question) return res.status(404).send('The question with that ID was not found');
 
     const result = validateQuestion(req.body);
 
@@ -183,271 +134,32 @@ app.post('/assesmentsquestions', (req, res) => {
         return;
     }
 
-    assessmentsQuestions.push(assessmentQuestion);
-     res.send(assessmentQuestion);
+question.question = req.body.question;
+question.type = req.body.type;
+question.category = req.body.category;
+question.possibleAnswers = req.body.possibleAnswers;
+question.correctAnswer = req.body.correctAnswer;
 
-  });
+res.send(question);
 
-  app.put('/assesmentsquestions/:id', (req,res) => {
+}); 
 
-    const question = assessmentsQuestions.find(q => q.id === parseInt(req.params.id));
+//DELETE a specific question
 
-    if (!question) res.status(404).send('The question with that ID was not found within Assessments Questions');
+app.delete('/allquestions/:questiontype/:id', (req,res) => {
 
-    const result = validateQuestion(req.body);
+    const question = allQuestions.find(q => q.id === parseInt(req.params.id));
+    if (!question) return res.status(404).send('The question with that ID was not found');
 
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    question.question = req.body.question;
-    question.type = req.body.type;
-    question.category = req.body.category;
-    question.possibleAnswers = req.body.possibleAnswers;
-    question.correctAnswer = req.body.correctAnswer;
+    const index = allQuestions.indexOf(question);
+    allQuestions.splice(index, 1);
 
     res.send(question);
-  
-
-
-  });
-
-//Training questions requests
-
-app.get('/trainingquestions', (req, res) => {
-
-    res.send(trainingQuestions);
-
-});
-
-app.get('/trainingquestions/:id', (req, res) => {
-
-    res.send(`hello world training questions ${req.params.id}`);
-
-});
-
-app.post('/trainingquestions', (req, res) => {
-
-    const trainingQuestion = {
-        id: trainingQuestions.length + 1,
-        question: req.body.question,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-    };
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    trainingQuestions.push(trainingQuestion);
-    res.send(trainingQuestion);
-
+    
 });
 
 
-
-//Tournament questions requests
-
-app.get('/tournamentquestions', (req, res) => {
-
-    res.send(tournamentQuestions);
-
-});
-
-app.get('/tournamentquestions/:id', (req, res) => {
-
-    res.send(`hello world tournament questions ${req.params.id}`);
-
-});
-
-app.post('/tournamentquestions', (req, res) => {
-
-    const tournamentQuestion = {
-        id: tournamentQuestions.length + 1,
-        question: req.body.question,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-    };
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    tournamentQuestions.push(tournamentQuestion);
-    res.send(tournamentQuestion);
-
-});
-
-
-
-
-//Courses questions requests
-
-app.get('/coursesquestions', (req, res) => {
-
-    res.send(coursesQuestions);
-
-});
-
-app.get('/coursesquestions/:id', (req, res) => {
-
-    res.send(`hello world courses questions ${req.params.id}`);
-
-});
-
-app.post('/coursesquestions', (req, res) => {
-
-    const coursesQuestion = {
-        id: coursesQuestions.length + 1,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-
-    };
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    coursesQuestions.push(coursesQuestion);
-    res.send(coursesQuestion);
-
-});
-
-
-//Sensei questions requests
-
-app.get('/senseiquestions', (req, res) => {
-
-    res.send(senseiQuestions);
-
-});
-
-app.get('/senseiquestions/:id', (req, res) => {
-
-    res.send(`hello world sensei questions ${req.params.id}`);
-
-});
-
-app.post('/senseiquestions', (req, res) => {
-
-    const senseiQuestion = {
-        id: senseiQuestions.length + 1,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-
-
-    };
-
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    senseiQuestions.push(senseiQuestion);
-    res.send(senseiQuestion);
-
-});
-
-
-//Configuration questions requests
-
-app.get('/configurationquestions', (req, res) => {
-
-    res.send(configurationQuestions);
-
-});
-
-app.get('/configurationquestions/:id', (req, res) => {
-
-    res.send(`hello world configuration questions ${req.params.id}`);
-
-});
-
-app.post('/configurationquestions', (req, res) => {
-
-    const configurationQuestion = {
-        id: configurationQuestions.length + 1,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-    };
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    configurationQuestions.push(configurationQuestion);
-    res.send(configurationQuestion);
-
-});
-
-
-
-//Metrics Reports questions requests
-
-app.get('/metricsreportsquestions', (req, res) => {
-
-    res.send(metricsReportsQuestions);
-
-});
-
-app.get('/metricsreportsquestions/:id', (req, res) => {
-
-    res.send(`hello world metricsreports questions ${req.params.id}`);
-
-});
-
-app.post('/metricsreportsquestions', (req, res) => {
-
-    const metricsreportsQuestion = {
-        id: metricsReportsQuestions.length + 1,
-        type: req.body.type,
-        category: req.body.category,
-        possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
-    };
-
-    const result = validateQuestion(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
-    metricsReportsQuestions.push(metricsreportsQuestion);
-    res.send(metricsreportsQuestion);
-
-});
-
-
-
-
-//Users requests
+//GET all users
 
 app.get('/users', (req, res) => {
 
@@ -455,11 +167,17 @@ app.get('/users', (req, res) => {
 
 });
 
+//GET a specific user
+
 app.get('/users/:id', (req, res) => {
 
-    res.send(`hello world users ${req.params.id}`);
+    const user = usersArray.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send('There is no user with that ID');
+    res.send(user);
 
 });
+
+//POST a new user
 
 app.post('/users', (req, res) => {
 
@@ -482,6 +200,46 @@ app.post('/users', (req, res) => {
 
 });
 
+//PUT a specific user 
+
+app.put('/users/:id', (req,res) => {
+
+    const user = usersArray.find(q => q.id === parseInt(req.params.id));
+
+    const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    };
+
+    const result = validateUser(newUser);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    user.name = newUser.name;
+    user.email = newUser.email;
+    user.password = newUser.password;
+
+    res.send(newUser);
+
+});
+
+//DELETE a specific user
+
+app.delete('/users/:id', (req,res) =>{
+
+    const user = usersArray.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.status(404).send('A user with that ID was not found');
+
+    const index = usersArray.indexOf(user);
+    usersArray.splice(index, 1);
+
+    res.send(user);
+
+});
 
 
 const port = process.env.PORT || 3000;
