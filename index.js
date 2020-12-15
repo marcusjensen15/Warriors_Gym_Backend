@@ -148,13 +148,13 @@ app.get('/allquestions/:questiontype/:id', (req,res) => {
 });
 
 
-//Need to write question delete and put routes like above.
+//Need to write question delete and put routes like above.a
 
 app.put('/allquestions/:questiontype/:id', (req,res) => {
 
 const question = allQuestions.find(q => q.id === parseInt(req.params.id));
 
-if (!question) res.status(404).send('The question with that ID was not found');
+if (!question) return res.status(404).send('The question with that ID was not found');
 
     const result = validateQuestion(req.body);
 
@@ -170,9 +170,19 @@ question.possibleAnswers = req.body.possibleAnswers;
 question.correctAnswer = req.body.correctAnswer;
 
 res.send(question);
-  
 
+}); 
 
+app.delete('/allquestions/:questiontype/:id', (req,res) => {
+
+    const question = allQuestions.find(q => q.id === parseInt(req.params.id));
+    if (!question) return res.status(404).send('The question with that ID was not found');
+
+    const index = allQuestions.indexOf(question);
+    allQuestions.splice(index, 1);
+
+    res.send(question);
+    
 });
 
 
