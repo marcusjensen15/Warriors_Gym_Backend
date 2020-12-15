@@ -182,6 +182,8 @@ app.get('/users/:id', (req, res) => {
 
 });
 
+//POST a new user
+
 app.post('/users', (req, res) => {
 
     const user = {
@@ -203,6 +205,32 @@ app.post('/users', (req, res) => {
 
 });
 
+//PUT a specific user 
+
+app.put('/users/:id', (req,res) => {
+
+    const user = usersArray.find(q => q.id === parseInt(req.params.id));
+
+    const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    };
+
+    const result = validateUser(newUser);
+
+    if (result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    user.name = newUser.name;
+    user.email = newUser.email;
+    user.password = newUser.password;
+
+    res.send(newUser);
+
+});
 
 
 const port = process.env.PORT || 3000;
