@@ -1,9 +1,6 @@
 const Joi = require('joi');
 const express = require('express');
 const app = express();
-
-
-// app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
@@ -11,11 +8,10 @@ app.use(bodyParser.urlencoded({
 
 // allQuestions and usersArray is fake data (obviously)
 
-const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"oink", id:10},  {type:"fred", name:"howdy", id: 6}];
-
+const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"lalala", id:10},  {type:"fred", name:"howdy", id: 6}];
 const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
 
-// Question validation middleware, will be seperated into another file later
+// validateQuestion middleware, will be seperated into another file later
 // When ID gets incorporated into this, we will write validation middleware for it below. For now, number is an int. In production it will likely be a string.
 
 function validateQuestion(question){
@@ -32,7 +28,7 @@ function validateQuestion(question){
 
 };
 
-// User Validation Middleware. Will need to incorporate addtional logic to check DB if user exists 
+// validateUser middleware. Will need to incorporate addtional logic to check DB if user exists. Will also be seperated into another file.
 
 function validateUser(user){
 
@@ -98,7 +94,6 @@ app.post('/allquestions', (req,res) => {
 
     allQuestions.push(question);
      res.send(question);
-
 
 });
 
