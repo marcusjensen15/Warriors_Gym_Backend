@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const validateQuestion = require('./middleware/validateQuestion');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -11,22 +12,6 @@ app.use(bodyParser.urlencoded({
 const allQuestions = [{type: "bill", name: "steve", id: 4}, {type: "bill", name: "mike", id: 7}, {type:"fred", name:"lalala", id:10},  {type:"fred", name:"howdy", id: 6}];
 const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
 
-// validateQuestion middleware, will be seperated into another file later
-// When ID gets incorporated into this, we will write validation middleware for it below. For now, number is an int. In production it will likely be a string.
-
-function validateQuestion(question){
-
-    const questionSchema = Joi.object({
-        question: Joi.string().min(10).required(),
-        type: Joi.string().required(),
-        category: Joi.string().required(),
-        possibleAnswers: Joi.array().items(Joi.string()).required(),
-        correctAnswer: Joi.string().required()
-    });
-    
-    return questionSchema.validate(question);
-
-};
 
 // validateUser middleware. Will need to incorporate addtional logic to check DB if user exists. Will also be seperated into another file.
 
