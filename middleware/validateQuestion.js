@@ -1,7 +1,5 @@
 const Joi = require('joi');
 
-
-
 // validateQuestion middleware, will be seperated into another file later
 // When ID gets incorporated into this, we will write validation middleware for it below. For now, number is an int. In production it will likely be a string.
 
