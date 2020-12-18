@@ -6,57 +6,29 @@
 ### To test endpoints in Postmann, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected
 #### With 'Possible Answers' field testing in Postman, send a bunch of different values in different rows all with the key 'possibleAnswers'. The response will be an array of all values.
 
-### Key Endpoints to build
+### Key Endpoints: Need to add specific route URLs:
 
-#### GET Requests 
+#### GET Requests
 
 - GET all Questions
-- GET all Assesments Questions
-- GET all Training Questions
-- GET all Tournament Questions
-- GET all Courses Questions
-- GET all Sensei Questions 
-- GET all Configuration Questions
-- GET all Metrics & Reports Questions
-- GET all Administration Questions 
-- GET all Users (Later once we build accounts)
+- GET all Questions of a specific type
+- GET a specific question
+- GET all users
+- GET a specific user
 
 
 #### POST Requests 
 
-- POST Questions
-- POST Assesments Questions
-- POST Training Questions
-- POST Tournament Questions
-- POST Courses Questions
-- POST Sensei Questions 
-- POST Configuration Questions
-- POST Metrics & Reports Questions
-- POST Administration Questions 
-- POST Users (Later once we build accounts)
+- POST a new question
+- POST a new user
+
 
 #### PUT Requests 
 
-- PUT Questions (to specific ID)
-- PUT Assesments (to specific ID) Questions
-- PUT Training (to specific ID) Questions
-- PUT Tournament (to specific ID) Questions
-- PUT Courses (to specific ID) Questions
-- PUT Sensei (to specific ID) Questions 
-- PUT Configuration (to specific ID) Questions
-- PUT Metrics & Reports (to specific ID) Questions
-- PUT Administration (to specific ID) Questions 
-- PUT Users (to specific ID) (Later once we build accounts)
+- PUT a specific question 
+- PUT a specific user
 
 #### DELETE Requests 
 
-- DELETE Questions (to specific ID)
-- DELETE Assesments (to specific ID) Questions
-- DELETE Training (to specific ID) Questions
-- DELETE Tournament (to specific ID) Questions
-- DELETE Courses (to specific ID) Questions
-- DELETE Sensei (to specific ID) Questions 
-- DELETE Configuration (to specific ID) Questions
-- DELETE Metrics & Reports (to specific ID) Questions
-- DELETE Administration (to specific ID) Questions 
-- DELETE Users (to specific ID) (Later once we build accounts)
+- DELETE a specific question 
+- DELETE a specific user 
