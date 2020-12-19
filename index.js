@@ -8,6 +8,10 @@ app.use(bodyParser.urlencoded({
     extended: true
   }));
 
+// Will need to include a couple different enviornments:
+
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+
 //All questions routes
 app.use('/questions', questions);
 

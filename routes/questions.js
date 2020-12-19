@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const validateQuestion = require('../middleware/validateQuestion');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/questions')
+    .then(() => console.log('Connected to mongodb questions db'))
+    .catch(err => console.error('Could not connect to MongoDB questions', err));
+
 
 
 // questions is fake data
