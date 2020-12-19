@@ -2,9 +2,34 @@ const express = require('express');
 const router = express.Router();
 const validateQuestion = require('../middleware/validateQuestion');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/questions')
+mongoose.connect('mongodb://localhost:27017/warriors_gym')
     .then(() => console.log('Connected to mongodb questions db'))
     .catch(err => console.error('Could not connect to MongoDB questions', err));
+
+// seperate question schema and question into another file.
+
+const questionSchema = new mongoose.Schema({
+    questionText: String,
+    type: String,
+    category: String,
+    possibleAnswers: [ String ],
+    correctAnswer: String,
+    date: { type: Date, default: Date.now}
+});
+
+const Question = mongoose.model('Question', questionSchema);
+
+// Will implement below in POST route:
+//     const question = new Question({
+//         questionText: req.body.question,
+//         type: req.body.type,
+//         category: req.body.category,
+//         possibleAnswers: req.body.possibleAnswers,
+//         correctAnswer: req.body.correctAnswer
+//    });
+
+
+
 
 
 
@@ -36,23 +61,39 @@ router.get('/', (req, res) => {
 
 //POST a new question
 
-router.post('/', (req,res) => {
-    const question = {
-        id: questionsArray.length + 1,
-        question: req.body.question,
+router.post('/', async (req,res) => {
+
+    //need to validate before adding to DB:
+    
+    // const question = {
+    //     id: questionsArray.length + 1,
+    //     question: req.body.question,
+    //     type: req.body.type,
+    //     category: req.body.category,
+    //     possibleAnswers: req.body.possibleAnswers,
+    //     correctAnswer: req.body.correctAnswer
+    // };
+
+    // const result = validateQuestion(req.body);
+    // if (result.error){
+    //     res.status(400).send(result.error.details[0].message);
+    //     return;
+    // }
+    // questionsArray.push(question);
+    //  res.send(question);
+
+    const question = new Question({
+        questionText: req.body.question,
         type: req.body.type,
         category: req.body.category,
         possibleAnswers: req.body.possibleAnswers,
         correctAnswer: req.body.correctAnswer
-    };
+   });
 
-    const result = validateQuestion(req.body);
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-    questionsArray.push(question);
-     res.send(question);
+   const result = await question.save();
+   res.send(result);
+
+
 });
 
 //GET a specific question
