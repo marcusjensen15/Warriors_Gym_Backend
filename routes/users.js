@@ -2,6 +2,10 @@ const express = require('express');
 const validateUser = require('../middleware/validateUser');
 const router = express.Router();
 const validateQuestion = require('../middleware/validateUser');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/warriors_gym')
+    .then(() => console.log('Connected to mongodb users db'))
+    .catch(err => console.error('Could not connect to MongoDB users', err));
 
 //usersArray is fake data
 
