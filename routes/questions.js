@@ -120,6 +120,13 @@ router.put('/:questiontype/:id', async (req,res) => {
         question.possibleAnswers = req.body.possibleAnswers;
         question.correctAnswer = req.body.correctAnswer;
 
+        const validQuestion = validateQuestion(req.body);
+
+        if (validQuestion.error){
+            res.status(400).send(validQuestion.error.details[0].message);
+            return;
+        }
+
         const result = await question.save();
 
 
