@@ -55,32 +55,15 @@ router.get('/:questiontype', (req, res) => {
 
 // GET all questions in the entire database 
 
-router.get('/', (req, res) => {
-    res.send(questionsArray);
+router.get('/', async (req, res) => {
+    // res.send(questionsArray);
+    const questions = await Question.find();
+    res.send(questions);
 });
 
 //POST a new question
 
 router.post('/', async (req,res) => {
-
-    //need to validate before adding to DB:
-
-    // const question = {
-    //     id: questionsArray.length + 1,
-    //     question: req.body.question,
-    //     type: req.body.type,
-    //     category: req.body.category,
-    //     possibleAnswers: req.body.possibleAnswers,
-    //     correctAnswer: req.body.correctAnswer
-    // };
-
-    // const result = validateQuestion(req.body);
-    // if (result.error){
-    //     res.status(400).send(result.error.details[0].message);
-    //     return;
-    // }
-    // questionsArray.push(question);
-    //  res.send(question);
 
     const question = new Question({
         questionText: req.body.question,
