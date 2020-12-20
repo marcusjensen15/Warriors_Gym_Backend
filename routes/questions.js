@@ -43,7 +43,7 @@ router.get('/:category', async (req, res) => {
 
     const questionType = req.params.category;
     let results = await Question.find({category: questionType });
-    
+
     if (results.length === 0){
         results = "There are no questions for this category"
     }
@@ -85,20 +85,21 @@ router.post('/', async (req,res) => {
 
 //GET a specific question
 
-router.get('/:questiontype/:id', (req,res) => {
+router.get('/:questiontype/:id', async (req,res) => {
 
-    const questionType = req.params.questiontype;
     const questionId = req.params.id;
-    let result = questionsArray.filter(question => {
-        if (question.type === questionType && question.id == questionId){
-            return question;
-        }
-    });
-    if (result.length === 0){
 
-        result = "There is no question with this ID"
+    try {
+        let result = await Question.findById(questionId);
+        if (!result){
+            throw new Error();
+        }
+        res.send(result);
     }
-    res.send(result);
+
+    catch (error){
+        res.send("There is no question with this ID");
+    }
 });
 
 
