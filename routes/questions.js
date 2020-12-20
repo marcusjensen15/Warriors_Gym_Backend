@@ -105,24 +105,50 @@ router.get('/:questiontype/:id', async (req,res) => {
 
 //PUT a specific question
 
-router.put('/:questiontype/:id', (req,res) => {
+router.put('/:questiontype/:id', async (req,res) => {
 
-    const question = questionsArray.find(q => q.id === parseInt(req.params.id));
-    if (!question) return res.status(404).send('The question with that ID was not found');
+    const questionId = req.params.id;
 
-    const result = validateQuestion(req.body);
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
+    try {
+        let question = await Question.findById(questionId);
+        if (!question){
+            throw new Error();
+        }
+        question.questionText = req.body.question;
+        question.type = req.body.type;
+        question.category = req.body.category;
+        question.possibleAnswers = req.body.possibleAnswers;
+        question.correctAnswer = req.body.correctAnswer;
+
+        const result = await question.save();
+
+
+        res.send(result);
     }
 
-    question.question = req.body.question;
-    question.type = req.body.type;
-    question.category = req.body.category;
-    question.possibleAnswers = req.body.possibleAnswers;
-    question.correctAnswer = req.body.correctAnswer;
+    catch (error){
+        res.send("There is no question with this ID");
+    }
 
-    res.send(question);
+
+
+
+    // const question = questionsArray.find(q => q.id === parseInt(req.params.id));
+    // if (!question) return res.status(404).send('The question with that ID was not found');
+
+    // const result = validateQuestion(req.body);
+    // if (result.error){
+    //     res.status(400).send(result.error.details[0].message);
+    //     return;
+    // }
+
+    // question.question = req.body.question;
+    // question.type = req.body.type;
+    // question.category = req.body.category;
+    // question.possibleAnswers = req.body.possibleAnswers;
+    // question.correctAnswer = req.body.correctAnswer;
+
+    // res.send(question);
 
 }); 
 
