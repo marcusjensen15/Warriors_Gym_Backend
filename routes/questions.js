@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req,res) => {
 
     //need to validate before adding to DB:
-    
+
     // const question = {
     //     id: questionsArray.length + 1,
     //     question: req.body.question,
@@ -90,8 +90,15 @@ router.post('/', async (req,res) => {
         correctAnswer: req.body.correctAnswer
    });
 
+    const validQuestion = validateQuestion(req.body);
+
+    if (validQuestion.error){
+        res.status(400).send(validQuestion.error.details[0].message);
+        return;
+    }
+
    const result = await question.save();
-   res.send(result);
+   res.send(question);
 
 
 });
