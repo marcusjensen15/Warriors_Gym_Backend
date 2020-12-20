@@ -39,14 +39,11 @@ const questionsArray = [{type: "bill", name: "steve", id: 4}, {type: "bill", nam
 
 // GET questions of a given type
 
-router.get('/:questiontype', (req, res) => {
+router.get('/:category', async (req, res) => {
 
-    const questionType = req.params.questiontype;
-    let results = questionsArray.filter(question => {
-        if (question.type === questionType){
-            return question;
-        }
-    });
+    const questionType = req.params.category;
+    let results = await Question.find({category: questionType });
+    
     if (results.length === 0){
         results = "There are no questions for this category"
     }
