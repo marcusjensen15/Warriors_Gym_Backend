@@ -4,7 +4,7 @@ const router = express.Router();
 const {User, validateUser} = require('../schema/userSchema');
 // const validateQuestion = require('../middleware/validateUser');
 const mongoose = require('mongoose');
-const { validate } = require('../model/question');
+// const { validate } = require('../model/question');
 // mongoose.connect('mongodb://localhost:27017/warriors_gym')
 //     .then(() => console.log('Connected to mongodb users db'))
 //     .catch(err => console.error('Could not connect to MongoDB users', err));
@@ -35,8 +35,12 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
 
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
+    const validUser = validateUser(req.body);
+
+    if (validUser.error){
+        res.status(400).send(validUser.error.details[0].message);
+        return;
+    }
 
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send('User already registered');
