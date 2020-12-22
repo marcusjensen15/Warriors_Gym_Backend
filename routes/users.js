@@ -1,11 +1,13 @@
 const express = require('express');
-const validateUser = require('../middleware/validateUser');
+// const validateUser = require('../middleware/validateUser');
 const router = express.Router();
-const validateQuestion = require('../middleware/validateUser');
+const {User, validateUser} = require('../schema/userSchema');
+// const validateQuestion = require('../middleware/validateUser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/warriors_gym')
-    .then(() => console.log('Connected to mongodb users db'))
-    .catch(err => console.error('Could not connect to MongoDB users', err));
+const { validate } = require('../model/question');
+// mongoose.connect('mongodb://localhost:27017/warriors_gym')
+//     .then(() => console.log('Connected to mongodb users db'))
+//     .catch(err => console.error('Could not connect to MongoDB users', err));
 
 //usersArray is fake data
 
@@ -14,8 +16,11 @@ const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", 
 
 //GET all users
 
-router.get('/', (req, res) => {
-    res.send(usersArray);
+router.get('/', async (req, res) => {
+
+    const users = await User.find();
+    res.send(users);
+    // res.send(usersArray);
 });
 
 //GET a specific user
@@ -28,20 +33,37 @@ router.get('/:id', (req, res) => {
 
 //POST a new user
 
-router.post('/', (req, res) => {
-    const user = {
-        id: usersArray.length + 1,
+router.post('/', async (req, res) => {
+
+    // const { error } = validate(req.body);
+    // if (error) return res.status(400).send(error.details[0].message);
+
+    let user = await User.findOne({ email: req.body.email });
+    if (user) return res.status(400).send('User already registered');
+
+    user = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
-    };
-    const result = validateUser(req.body);
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-    usersArray.push(user);
+    });
+
+    await user.save();
+
     res.send(user);
+
+    // const user = {
+    //     id: usersArray.length + 1,
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: req.body.password
+    // };
+    // const result = validateUser(req.body);
+    // if (result.error){
+    //     res.status(400).send(result.error.details[0].message);
+    //     return;
+    // }
+    // usersArray.push(user);
+    // res.send(user);
 });
 
 //PUT a specific user 

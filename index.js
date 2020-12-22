@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const express = require('express');
+const mongoose = require('mongoose');
 const questions = require('./routes/questions');
 const users = require('./routes/users');
 const app = express();
@@ -7,7 +8,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
-
+mongoose.connect('mongodb://localhost:27017/warriors_gym')
+    .then(() => console.log('Connected to mongodb users db'))
+    .catch(err => console.error('Could not connect to MongoDB users', err));
 // Will need to include a couple different enviornments:
 
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);

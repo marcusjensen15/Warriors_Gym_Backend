@@ -4,9 +4,9 @@ const validateQuestion = require('../middleware/validateQuestion');
 const mongoose = require('mongoose');
 const questionSchema = require('../schema/questionSchema');
 const Question = require('../model/question');
-mongoose.connect('mongodb://localhost:27017/warriors_gym')
-    .then(() => console.log('Connected to mongodb questions db'))
-    .catch(err => console.error('Could not connect to MongoDB questions', err));
+// mongoose.connect('mongodb://localhost:27017/warriors_gym')
+//     .then(() => console.log('Connected to mongodb questions db'))
+//     .catch(err => console.error('Could not connect to MongoDB questions', err));
 
 // GET questions of a given type
 
