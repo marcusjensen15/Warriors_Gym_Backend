@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({
     extended: true
   }));
 mongoose.connect('mongodb://localhost:27017/warriors_gym')
-    .then(() => console.log('Connected to mongodb users db'))
-    .catch(err => console.error('Could not connect to MongoDB users', err));
+    .then(() => console.log('Connected to mongodb db'))
+    .catch(err => console.error('Could not connect to MongoDB', err));
 // Will need to include a couple different enviornments:
 
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
