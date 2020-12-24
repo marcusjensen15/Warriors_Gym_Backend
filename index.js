@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const questions = require('./routes/questions');
 const users = require('./routes/users');
+const auth = require('./routes/auth');
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
@@ -20,6 +21,10 @@ app.use('/questions', questions);
 
 //All users routes
 app.use('/users', users);
+
+//All auth routes
+
+app.use('/auth', auth);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('listening on port ' + port));

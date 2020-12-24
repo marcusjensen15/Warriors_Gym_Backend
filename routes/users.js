@@ -6,6 +6,7 @@ const {User} = require('../schema/userSchema');
 const validateUser = require('../middleware/validateUser');
 const mongoose = require('mongoose');
 
+
 //GET all users
 
 router.get('/', async (req, res) => {
