@@ -3,7 +3,8 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 // const validateUser = require('../middleware/validateUser');
 const router = express.Router();
-const {User, validateUser} = require('../schema/userSchema');
+const {User} = require('../schema/userSchema');
+const validateUser = require('../middleware/validateUser');
 // const validateQuestion = require('../middleware/validateUser');
 const mongoose = require('mongoose');
 // const { validate } = require('../model/question');
@@ -13,7 +14,7 @@ const mongoose = require('mongoose');
 
 //usersArray is fake data
 
-const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
+// const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
 
 
 //GET all users
