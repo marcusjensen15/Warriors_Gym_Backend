@@ -1,21 +1,17 @@
 const express = require('express');
-const validateUser = require('../middleware/validateUser');
+const _ = require('lodash');
+const bcrypt = require('bcrypt');
 const router = express.Router();
-const validateQuestion = require('../middleware/validateUser');
+const {User} = require('../schema/userSchema');
+const validateUser = require('../middleware/validateUser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/warriors_gym')
-    .then(() => console.log('Connected to mongodb users db'))
-    .catch(err => console.error('Could not connect to MongoDB users', err));
-
-//usersArray is fake data
-
-const usersArray = [{name: "Bill", email: "bill@test.com", password: "fastcar", id:1},{name: "Samantha", email: "samantha@test.com", password: "slowcar", id:2},{name: "Fred", email: "fred@test.com", password: "fastfred", id:3},{name: "Toni", email: "toni@test.com", password: "tonitime", id:4}];
-
 
 //GET all users
 
-router.get('/', (req, res) => {
-    res.send(usersArray);
+router.get('/', async (req, res) => {
+
+    const users = await User.find();
+    res.send(users);
 });
 
 //GET a specific user
@@ -28,20 +24,27 @@ router.get('/:id', (req, res) => {
 
 //POST a new user
 
-router.post('/', (req, res) => {
-    const user = {
-        id: usersArray.length + 1,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    };
-    const result = validateUser(req.body);
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
+router.post('/', async (req, res) => {
+
+    const validUser = validateUser(req.body);
+
+    if (validUser.error){
+        res.status(400).send(validUser.error.details[0].message);
         return;
     }
-    usersArray.push(user);
-    res.send(user);
+
+    let user = await User.findOne({ email: req.body.email });
+    if (user) return res.status(400).send('User already registered');
+
+    user = new User(_.pick(req.body, ['name', 'email', 'password']));
+    
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+
+
+    await user.save();
+
+    res.send( _.pick(user, ['_id', 'name', 'email']));
 });
 
 //PUT a specific user 
