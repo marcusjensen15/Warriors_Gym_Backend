@@ -58,8 +58,6 @@ router.post('/', async (req, res) => {
 
     await user.save();
 
-    // const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
-
     const token = user.generateAuthToken();
 
 
@@ -68,14 +66,37 @@ router.post('/', async (req, res) => {
 
 //PUT a specific user 
 
-router.put('/:id', (req,res) => {
-    const user = usersArray.find(q => q.id === parseInt(req.params.id));
+// router.put('/:id', (req,res) => {
+//     const user = usersArray.find(q => q.id === parseInt(req.params.id));
+//     const newUser = {
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: req.body.password
+//     };
+//     const result = validateUser(newUser);
+//     if (result.error){
+//         res.status(400).send(result.error.details[0].message);
+//         return;
+//     }
+//     user.name = newUser.name;
+//     user.email = newUser.email;
+//     user.password = newUser.password;
+//     res.send(newUser);
+// });
+
+//PUT a specific user using token based auth:
+
+router.put('/me', authMiddleware, async (req,res) => {
+
+    const user = await User.findById(req.user._id);
+    
     const newUser = {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
     };
     const result = validateUser(newUser);
+
     if (result.error){
         res.status(400).send(result.error.details[0].message);
         return;
@@ -84,6 +105,7 @@ router.put('/:id', (req,res) => {
     user.email = newUser.email;
     user.password = newUser.password;
     res.send(newUser);
+    
 });
 
 //DELETE a specific user
