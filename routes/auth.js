@@ -1,13 +1,11 @@
 const express = require('express');
 const _ = require('lodash');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const {User} = require('../schema/userSchema');
 const validateLogin = require('../middleware/validateLogin');
 const mongoose = require('mongoose');
 const Joi = require('joi');
-const config = require('config');
 
 
 //POST a new user
@@ -32,7 +30,8 @@ router.post('/', async (req, res) => {
 
     // We are storing the token secret below in a config file so it isn't hardcoded into our app.
     // The actual secret is in an ENV variable that needs to be changed.
-    const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
+    // const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
+    const token = user.generateAuthToken();
 
     res.send(token);
 });
