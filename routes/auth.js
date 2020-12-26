@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const {User} = require('../schema/userSchema');
@@ -28,7 +29,10 @@ router.post('/', async (req, res) => {
         return res.status(400).send('Invalid email or password');
     }
 
-    res.send(true);
+    // 'Secret' string below will later be in an ENV variable. Hardcoding it here just for demo.
+    const token = jwt.sign({ _id: user._id}, 'jwtPrivateKey');
+
+    res.send(token);
 });
 
 module.exports = router;
