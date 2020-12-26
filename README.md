@@ -2,6 +2,8 @@
 
 ## [Here is the link for the Warriors Gym Frontend Repo](google.com)
 
+### Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey = <Input_Security_Key_Here>`
+
 ### To run application, use `nodemon index.js`. This will auto start/stop the server.
 
 ### To test endpoints in Postman, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected.
