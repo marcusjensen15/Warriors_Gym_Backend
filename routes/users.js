@@ -5,6 +5,8 @@ const router = express.Router();
 const {User} = require('../schema/userSchema');
 const validateUser = require('../middleware/validateUser');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middleware/auth');
 
 
 
@@ -18,11 +20,21 @@ router.get('/', async (req, res) => {
 
 //GET a specific user
 
-router.get('/:id', (req, res) => {
-    const user = usersArray.find(u => u.id === parseInt(req.params.id));
-    if (!user) return res.status(404).send('There is no user with that ID');
+// router.get('/:id', (req, res) => {
+//     const user = usersArray.find(u => u.id === parseInt(req.params.id));
+//     if (!user) return res.status(404).send('There is no user with that ID');
+//     res.send(user);
+// });
+
+// GET a specific user utilizing web token identification
+
+router.get('/me', authMiddleware, async (req,res) => {
+
+    const user = await User.findById(req.user._id).select('-password');
     res.send(user);
+
 });
+
 
 //POST a new user
 
