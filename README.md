@@ -12,6 +12,8 @@
 
 #### Within Postman: Make sure the dropdown to the left of the API URL is set to the appropriate 'API Verb' before hitting the 'Send' button to one of the routes below.
 
+#### Some of these routes are protected. Within Postman you may need to 'POST' to `http:localhost:3000/auth` a valid password + email, copy token within 'Headers' of response, and include the token string as 'x-auth-token' as a header in your request. 
+
 ### Key Endpoints:
 
 #### GET Requests

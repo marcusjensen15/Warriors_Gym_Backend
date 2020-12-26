@@ -3,7 +3,6 @@ const router = express.Router();
 const validateQuestion = require('../middleware/validateQuestion');
 const mongoose = require('mongoose');
 const {Question} = require('../schema/questionSchema');
-const auth = require('../middleware/auth');
 
 // GET questions of a given type
 
@@ -20,7 +19,7 @@ router.get('/:category', async (req, res) => {
 
 // GET all questions in the entire database 
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     
     const questions = await Question.find();
     res.send(questions);
@@ -28,7 +27,7 @@ router.get('/', auth, async (req, res) => {
 
 //POST a new question
 
-router.post('/', auth, async (req,res) => {
+router.post('/', async (req,res) => {
 
     const question = new Question({
         questionText: req.body.question,
