@@ -7,6 +7,7 @@ const {User} = require('../schema/userSchema');
 const validateLogin = require('../middleware/validateLogin');
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const config = require('config');
 
 
 //POST a new user
@@ -29,8 +30,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send('Invalid email or password');
     }
 
-    // 'Secret' string below will later be in an ENV variable. Hardcoding it here just for demo.
-    const token = jwt.sign({ _id: user._id}, 'jwtPrivateKey');
+    // We are storing the token secret below in a config file so it isn't hardcoded into our app.
+    // The actual secret is in an ENV variable that needs to be changed.
+    const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
 
     res.send(token);
 });

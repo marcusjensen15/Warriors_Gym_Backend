@@ -5,6 +5,9 @@ const router = express.Router();
 const {User} = require('../schema/userSchema');
 const validateUser = require('../middleware/validateUser');
 const mongoose = require('mongoose');
+const config = require('config');
+const jwt = require('jsonwebtoken');
+
 
 
 //GET all users
@@ -45,7 +48,9 @@ router.post('/', async (req, res) => {
 
     await user.save();
 
-    res.send( _.pick(user, ['_id', 'name', 'email']));
+    const token = jwt.sign({ _id: user._id}, config.get('jwtPrivateKey'));
+
+    res.header('x-auth-token',token).send( _.pick(user, ['_id', 'name', 'email']));
 });
 
 //PUT a specific user 
