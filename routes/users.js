@@ -110,13 +110,25 @@ router.put('/me', authMiddleware, async (req,res) => {
 
 //DELETE a specific user
 
-router.delete('/:id', (req,res) =>{
+// router.delete('/:id', (req,res) =>{
 
-    const user = usersArray.find(u => u.id === parseInt(req.params.id));
+//     const user = usersArray.find(u => u.id === parseInt(req.params.id));
+//     if (!user) return res.status(404).send('A user with that ID was not found');
+//     const index = usersArray.indexOf(user);
+//     usersArray.splice(index, 1);
+//     res.send(user);
+
+// });
+
+
+router.delete('/me', authMiddleware, async (req,res) =>{
+
+    const user = await User.findById(req.user._id);
     if (!user) return res.status(404).send('A user with that ID was not found');
-    const index = usersArray.indexOf(user);
-    usersArray.splice(index, 1);
-    res.send(user);
+    // const index = usersArray.indexOf(user);
+    // usersArray.splice(index, 1);
+    const result = await User.deleteOne({ _id: req.user._id });
+    res.send("This user was sucessfully deleted.");
 
 });
 
