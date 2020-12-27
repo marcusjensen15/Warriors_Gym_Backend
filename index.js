@@ -7,6 +7,7 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const app = express();
 const bodyParser = require('body-parser');
+const authMiddleware = require('./middleware/auth');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -23,7 +24,7 @@ mongoose.connect('mongodb://localhost:27017/warriors_gym')
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 
 //All questions routes
-app.use('/questions', questions);
+app.use('/questions', authMiddleware, questions);
 
 //All users routes
 app.use('/users', users);
