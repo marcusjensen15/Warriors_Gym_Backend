@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Question = mongoose.model('Question', new mongoose.Schema({
+const questionSchema = new mongoose.Schema({
 
     questionText: {
         type: String,
@@ -22,7 +22,34 @@ const Question = mongoose.model('Question', new mongoose.Schema({
         type: String
     },
     date: { type: Date, default: Date.now}
-}
-    ));
+
+});
+
+const Question = mongoose.model('Question', questionSchema);
+
+// const Question = mongoose.model('Question', new mongoose.Schema({
+
+//     questionText: {
+//         type: String,
+//         required: true
+//     },
+//     type: {
+//         type: String,
+//         required: true
+//     },
+//     category:  {
+//         type: String,
+//         required: true
+//     },
+//     possibleAnswers: {
+//         type: Array,
+//         required: true
+//     },
+//     correctAnser: {
+//         type: String
+//     },
+//     date: { type: Date, default: Date.now}
+// }
+//     ));
 
 exports.Question = Question;
