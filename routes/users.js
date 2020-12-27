@@ -13,7 +13,7 @@ const admin = require('../middleware/admin');
 
 //GET all users
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', [authMiddleware, admin], async (req, res) => {
 
     const users = await User.find();
     res.send(users);
