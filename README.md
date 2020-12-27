@@ -14,6 +14,8 @@
 
 #### Some of these routes are protected. Within Postman you may need to 'POST' to `http:localhost:3000/auth` a valid password + email, copy token within 'Headers' of response, and include the token string as 'x-auth-token' as a header in your request. 
 
+#### Some are both protected via authMiddleware and admin (middleware). To access these routes, you need to edit the user in mongodb, give them an 'isAdmin' property, and set it to 'true'. Do this in combination with the step above.
+
 ### Key Endpoints:
 
 #### GET Requests
@@ -21,8 +23,8 @@
 - GET all questions: `http://localhost:3000/questions`
 - GET all questions of a specific type: `http://localhost:3000/questions/<question_type>`
 - GET a specific question: `http://localhost:3000/questions/<question_type>/<question_id>`
-- GET all users: `http://localhost:3000/users`
-- GET a specific user: `http://localhost:3000/users/<user_id>`
+- GET all users (protected): `http://localhost:3000/users`
+- GET a specific user (protected): `http://localhost:3000/users/<user_id>`
 
 #### POST Requests 
 
@@ -37,4 +39,4 @@
 #### DELETE Requests 
 
 - DELETE a specific question: `http://localhost:3000/questions/<question_type>/<question_id>`
-- DELETE a specific user: `http://localhost:3000/users/<user_id>`
+- DELETE a specific user (protected): `http://localhost:3000/users/<user_id>`
