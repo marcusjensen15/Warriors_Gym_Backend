@@ -19,17 +19,18 @@ app.use(bodyParser.urlencoded({
 mongoose.connect('mongodb://localhost:27017/warriors_gym')
     .then(() => console.log('Connected to mongodb db'))
     .catch(err => console.error('Could not connect to MongoDB', err));
-// Will need to include a couple different enviornments:
+    
+// Will need to include a couple different enviornments
 
-// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+//All questions routes:
 
-//All questions routes
 app.use('/questions', authMiddleware, questions);
 
-//All users routes
+//All users routes:
+
 app.use('/users', users);
 
-//All auth routes
+//All auth routes:
 
 app.use('/auth', auth);
 
