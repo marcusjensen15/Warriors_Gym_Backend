@@ -6,9 +6,7 @@ const {Question} = require('../schema/questionSchema');
 const authMiddleware = require('../middleware/auth');
 const manager = require('../middleware/manager');
 
-
-
-// GET questions of a given type
+// GET questions of a given type:
 
 router.get('/:category', authMiddleware, async (req, res) => {
 
@@ -21,7 +19,7 @@ router.get('/:category', authMiddleware, async (req, res) => {
     res.send(results);
 });
 
-// GET all questions in the entire database 
+// GET all questions in the entire database: 
 
 router.get('/', authMiddleware, async (req, res) => {
     
@@ -29,7 +27,7 @@ router.get('/', authMiddleware, async (req, res) => {
     res.send(questions);
 });
 
-//POST a new question
+//POST a new question:
 
 router.post('/', [authMiddleware, manager], async (req,res) => {
 
@@ -54,7 +52,7 @@ router.post('/', [authMiddleware, manager], async (req,res) => {
 
 });
 
-//GET a specific question
+//GET a specific question:
 
 router.get('/:category/:id', authMiddleware, async (req,res) => {
 
@@ -74,7 +72,7 @@ router.get('/:category/:id', authMiddleware, async (req,res) => {
 });
 
 
-//PUT a specific question
+//PUT a specific question:
 
 router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
 
@@ -110,7 +108,7 @@ router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
 
 }); 
 
-//DELETE a specific question
+//DELETE a specific question:
 
 router.delete('/:category/:id', [authMiddleware, manager], async (req,res) => {
 

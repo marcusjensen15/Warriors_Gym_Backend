@@ -10,8 +10,7 @@ const authMiddleware = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
 
-
-//GET all users
+//GET all users:
 
 router.get('/', [authMiddleware, admin], async (req, res) => {
 
@@ -19,7 +18,7 @@ router.get('/', [authMiddleware, admin], async (req, res) => {
     res.send(users);
 });
 
-// GET a specific user utilizing web token identification
+// GET a specific user utilizing web token identification:
 
 router.get('/me', authMiddleware, async (req,res) => {
 
@@ -29,7 +28,7 @@ router.get('/me', authMiddleware, async (req,res) => {
 });
 
 
-//POST a new user
+//POST a new user:
 
 router.post('/', async (req, res) => {
 
@@ -58,6 +57,7 @@ router.post('/', async (req, res) => {
 });
 
 //PUT a specific user using token based auth: 
+
 router.put('/me', authMiddleware, async (req,res) => {
 
     const user = await User.findById(req.user._id);
