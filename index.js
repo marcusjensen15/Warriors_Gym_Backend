@@ -1,3 +1,5 @@
+require('express-async-errors');
+const error = require('./middleware/error');
 const Joi = require('joi');
 const express = require('express');
 const config = require('config');
@@ -33,6 +35,10 @@ app.use('/users', users);
 //All auth routes:
 
 app.use('/auth', auth);
+
+//Catching server errors:
+
+app.use(error);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('listening on port ' + port));

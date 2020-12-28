@@ -10,6 +10,8 @@
 
 3. To run application, use `nodemon index.js`. This will auto start/stop the server.
 
+4. May need to start MongoDB in a seperate terminal if you don't already have it running as a background process (see instructions for that below).
+
 ### Below is a guide to using the endpoints in Postman:
 
 1. There are 3 types of route protection available in this application: Authenticated User, Manager, and Admin:
@@ -41,6 +43,11 @@
     1. Your privleges must be 'manager'. Follow the steps above to set up correctly.
     2. Repeat the process of copying the token string and pasting within the 'Header' of the request.
     3. See an example [here](https://user-images.githubusercontent.com/56521797/103185832-f5aa9180-4872-11eb-9c81-0dc28bb3317d.png)
+
+
+#### Start and stop MongoDB Process on MacOS:
+    * Start: `brew services start mongodb-community`
+    * Stop: `brew services stop mongodb-community`
     
 
 ### Key Endpoints:
