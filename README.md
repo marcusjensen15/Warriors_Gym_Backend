@@ -1,42 +1,63 @@
-## Backend Repo: Warriors Gym. 
+## Warriors Gym: Backend Repository 
 
-## [Here is the link for the Warriors Gym Frontend Repo](google.com)
+#### [Here is the link for the Warriors Gym Frontend Repo](google.com)
 
-### Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey=<Input_Security_Key_Here>`. MAKE SURE THERE ARE NO SPACES.
+### Below are the steps to follow to get Warriors Gym up and running:
 
-### To run application, use `nodemon index.js`. This will auto start/stop the server.
+    1. Navigate to the cloned folder within terminal and run: `npm i`
 
-### To test endpoints in Postman, make sure you are on the `Body` tab and you have `x-www-form-urlencoded` selected.
+    2. Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey=<Input_Security_Key_Here>`. MAKE SURE THERE ARE NO SPACES.
 
-#### With 'Possible Answers' field testing in Postman, send a bunch of different values in different rows all with the key 'possibleAnswers'. The response will be an array of all values.
+    3. To run application, use `nodemon index.js`. This will auto start/stop the server.
 
-#### Within Postman: Make sure the dropdown to the left of the API URL is set to the appropriate 'API Verb' before hitting the 'Send' button to one of the routes below.
+### Below is a guide to using the endpoints in Postman:
 
-#### Some of these routes are protected. Within Postman you may need to 'POST' to `http:localhost:3000/auth` a valid password + email, copy token within 'Headers' of response, and include the token string as 'x-auth-token' as a header in your request. 
+    1. There are 3 types of route protection available in this application: Authenticated User, Manager, and Admin:
+        i. Authenticated Users: Full Read Access on Questions. Ability to read and edit their own user credentials (except for password). 
+        ii. Managers: Full: Create, Edit, Update, Delete functionality for Questions.
+        iii. Admin: Can get a list of all users, and delete specific users. 
+        iiii. Note: The only un-protected route in this application is creating a new users. 
 
-#### Some are both protected via authMiddleware and admin (middleware). To access these routes, you need to edit the user in mongodb, give them an 'isAdmin' property, and set it to 'true'. Do this in combination with the step above.
+    2. How to create a new account using Postman:
+        i. Perform a 'POST' request in Postman to: http://localhost:3000/users. You must provide a name, email, and password.
+        ii. The successful request will send back a token named 'x-auth-token' (located in the 'headers' tab of the response). Copy this string as seen [here](https://user-images.githubusercontent.com/56521797/103183101-50d58780-4865-11eb-8c4d-8292e3d78955.png).
+        iii. Now, to get all questions perform a 'GET' request to http://localhost:3000/questions. You will need to navigate over to the 'Headers' area of the request and create a key titled: 'x-auth-token'. Paste the token string you copied from the previous step into the 'value' field as seen [here](https://user-images.githubusercontent.com/56521797/103183252-fc7ed780-4865-11eb-9d0a-7c362c7240e0.png).
+
+    3. How to log into an existing account using Postman:
+        i. Perform the same steps as above, however instead of performing a 'POST' request to: http://localhost:3000/users, perform a 'POST' request to http://localhost:3000/auth using valid user credentials (omit the 'name field'. Use only valid 'email' and 'password'). See an example [here](https://user-images.githubusercontent.com/56521797/103183825-b88dd180-4869-11eb-8c14-2b1a9115a4ce.png).
+        ii. You may access all of the 'Authenticated Users' routes as above using the same process of copy/pasting the token in the 'x-auth-token' request header field. 
+
+    4. How to elevate your privleges to 'admin':
+        i. Create a user using step 1.
+        ii. Find that user in MongoDB Compass. Add a field within that user titled 'isAdmin'. Set the field type to 'Boolean'. Set the 'isAdmin' value to true. See an example [here](https://user-images.githubusercontent.com/56521797/103184394-dd377880-486c-11eb-8e81-b89bee5b42b9.png).
+        iii. Now, when you login with this user and copy the token, you will be able to perform actions enabled for Admin users.
+
+        4. How to elevate your privleges to 'manager':
+        i. Create a user using step 1.
+        ii. Find that user in MongoDB Compass. Add a field within that user titled 'isManager'. Set the field type to 'Boolean'. Set the 'isManager' value to true. See an example [here](https://user-images.githubusercontent.com/56521797/103184423-15d75200-486d-11eb-9a5b-d0e721a18794.png).
+        iii. Now, when you login with this user and copy the token, you will be able to perform actions enabled for Manager users.
+    
+    5. How to create new questions in Warriors Gym:
+        i. Your privleges must be 'manager'. Follow the steps above to set up correctly.
+        ii. Repeat the process of copying the token string and pasting within the 'Header' of the request.
+        iii. See an example [here](https://user-images.githubusercontent.com/56521797/103185832-f5aa9180-4872-11eb-9c81-0dc28bb3317d.png)
+    
 
 ### Key Endpoints:
 
-#### GET Requests
+Verb | Route                                                        | Permissions Required | Description 
+------ | ---------------------------------------------------------- | -------------------- | ------------------
+GET    | `http://localhost:3000/questions`                          | Authenticated User   | Get all questions in the Database 
+GET    | `http://localhost:3000/questions/<category>`               | Authenticated User   | Get all questions within a specific category
+GET    | `http://localhost:3000/questions/<category>/<id>`          | Authenticated User   | Get a specific question
+POST   | `http://localhost:3000/questions`                          | Manager              | Add a quesiton to the database 
+PUT    | `http://localhost:3000/questions/<category>/<id>`          | Manager              | Edit a specific question 
+DELETE | `http://localhost:3000/questions/<category>/<id>`          | Manager              | Delete a question 
+DELETE | `http://localhost:3000/users/<user_id>`                    | Admin                | Delete a user
+PUT    | `http://localhost:3000/users/me`                           | Authenticated User   | Edit your user credentials (not password)
+POST   | `http://localhost:3000/users`                              | None                 | Sign up for Warriors Gym
+GET    | `http://localhost:3000/users/me`                           | Authenticated User   | Get user credentials for your account
+GET    | `http://localhost:3000/users`                              | Admin                | Get a list of all users
+POST   | `http://localhost:3000/auth`                               | None                 | Log into Warriors Gym 
 
-- GET all questions: `http://localhost:3000/questions`
-- GET all questions of a specific type: `http://localhost:3000/questions/<question_type>`
-- GET a specific question: `http://localhost:3000/questions/<question_type>/<question_id>`
-- GET all users (protected): `http://localhost:3000/users`
-- GET a specific user (protected): `http://localhost:3000/users/<user_id>`
 
-#### POST Requests 
-
-- POST a new question: `http://localhost:3000/questions`
-- POST a new user: `http://localhost:3000/users`
-
-#### PUT Requests 
-
-- PUT a specific question: `http://localhost:3000/questions/<question_type>/<question_id>`
-- PUT a specific user: `http://localhost:3000/users/<user_id>`
-
-#### DELETE Requests 
-
-- DELETE a specific question: `http://localhost:3000/questions/<question_type>/<question_id>`
-- DELETE a specific user (protected): `http://localhost:3000/users/<user_id>`
