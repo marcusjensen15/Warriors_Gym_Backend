@@ -12,11 +12,11 @@
 
 ### Below is a guide to using the endpoints in Postman:
 
-Markup : 1. There are 3 types of route protection available in this application: Authenticated User, Manager, and Admin:
-            i. Authenticated Users: Full Read Access on Questions. Ability to read and edit their own user credentials (except for password). 
-            ii. Managers: Full: Create, Edit, Update, Delete functionality for Questions.
-            iii. Admin: Can get a list of all users, and delete specific users. 
-            iiii. Note: The only un-protected route in this application is creating a new users. 
+     1. There are 3 types of route protection available in this application: Authenticated User, Manager, and Admin:
+         1. Authenticated Users: Full Read Access on Questions. Ability to read and edit their own user credentials (except for password). 
+         2. Managers: Full: Create, Edit, Update, Delete functionality for Questions.
+         3. Admin: Can get a list of all users, and delete specific users. 
+         4. Note: The only un-protected route in this application is creating a new users. 
 
     2. How to create a new account using Postman:
         i. Perform a 'POST' request in Postman to: http://localhost:3000/users. You must provide a name, email, and password.
