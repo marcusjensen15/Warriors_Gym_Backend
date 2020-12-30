@@ -1,4 +1,5 @@
 require('express-async-errors');
+const winston = require('winston');
 const error = require('./middleware/error');
 const Joi = require('joi');
 const express = require('express');
@@ -13,6 +14,25 @@ const authMiddleware = require('./middleware/auth');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
+  
+const logger = winston.createLogger({
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+      winston.format. prettyPrint()
+    ),
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({filename: "logfile.log"})
+    ]
+})
+winston.add(logger)
+
+
+
+// winston.configure({transports: [new winston.transports.File({ filename: 'logfile.log' }) ]});
+
+
 
   if (!config.get('jwtPrivateKey')){
     console.error('FATAL ERROR: jwtPrivateKey is not defined. You must set the ENV Variable');
