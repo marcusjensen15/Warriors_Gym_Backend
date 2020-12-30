@@ -23,7 +23,7 @@ router.get('/:category', authMiddleware, async (req, res) => {
 
 router.get('/', authMiddleware, async (req, res) => {
     
-    // throw new Error('unable to get questions');
+    throw new Error('unable to get questions');
 
     const questions = await Question.find();
     res.send(questions);

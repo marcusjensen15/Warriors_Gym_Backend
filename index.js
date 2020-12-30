@@ -1,5 +1,6 @@
 require('express-async-errors');
 const winston = require('winston');
+require('winston-mongodb');
 const error = require('./middleware/error');
 const Joi = require('joi');
 const express = require('express');
@@ -14,7 +15,7 @@ const authMiddleware = require('./middleware/auth');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
-  
+
 const logger = winston.createLogger({
     format: winston.format.combine(
       winston.format.timestamp(),
@@ -23,9 +24,11 @@ const logger = winston.createLogger({
     ),
     transports: [
       new winston.transports.Console(),
-      new winston.transports.File({filename: "logfile.log"})
+      new winston.transports.File({filename: "logfile.log"}),
+      new winston.transports.MongoDB({ db: 'mongodb://localhost/warriors_gym', collection: 'errorlogs' })
+
     ]
-})
+});
 winston.add(logger)
 
 
