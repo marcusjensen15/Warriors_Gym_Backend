@@ -29,13 +29,16 @@ const logger = winston.createLogger({
 
     ]
 });
+
+winston.exceptions.handle(new winston.transports.File({ filename: 'uncaughtExceptions.log'}));
+
+
+process.on('unhandledRejection', (ex) => {
+  throw ex;
+});
+
+
 winston.add(logger)
-
-
-
-// winston.configure({transports: [new winston.transports.File({ filename: 'logfile.log' }) ]});
-
-
 
   if (!config.get('jwtPrivateKey')){
     console.error('FATAL ERROR: jwtPrivateKey is not defined. You must set the ENV Variable');
