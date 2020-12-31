@@ -1,4 +1,6 @@
 require('express-async-errors');
+const winston = require('winston');
+require('winston-mongodb');
 const error = require('./middleware/error');
 const Joi = require('joi');
 const express = require('express');
@@ -13,6 +15,30 @@ const authMiddleware = require('./middleware/auth');
 app.use(bodyParser.urlencoded({
     extended: true
   }));
+
+const logger = winston.createLogger({
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+      winston.format. prettyPrint()
+    ),
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({filename: "logfile.log"}),
+      new winston.transports.MongoDB({ db: 'mongodb://localhost/warriors_gym', collection: 'errorlogs' })
+
+    ]
+});
+
+winston.exceptions.handle(new winston.transports.File({ filename: 'uncaughtExceptions.log'}));
+
+
+process.on('unhandledRejection', (ex) => {
+  throw ex;
+});
+
+
+winston.add(logger)
 
   if (!config.get('jwtPrivateKey')){
     console.error('FATAL ERROR: jwtPrivateKey is not defined. You must set the ENV Variable');
