@@ -8,7 +8,7 @@ module.exports = function() {
         format: winston.format.combine(
           winston.format.timestamp(),
           winston.format.json(),
-          winston.format. prettyPrint()
+          winston.format.prettyPrint()
         ),
         transports: [
           new winston.transports.Console(),
@@ -19,6 +19,7 @@ module.exports = function() {
     });
     
     winston.exceptions.handle(
+        new winston.transports.Console(),
         new winston.transports.File({ filename: 'uncaughtExceptions.log'}));
     
     process.on('unhandledRejection', (ex) => {
