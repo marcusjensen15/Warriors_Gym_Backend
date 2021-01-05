@@ -12,6 +12,8 @@
 
 4. May need to start MongoDB in a seperate terminal if you don't already have it running as a background process (see instructions for that below).
 
+5. In a seperate terminal tab, you keep your testing enviornment ongoing by running `npm test`
+
 ### Below is a guide to using the endpoints in Postman:
 
 1. There are 3 types of route protection available in this application: Authenticated User, Manager, and Admin:
