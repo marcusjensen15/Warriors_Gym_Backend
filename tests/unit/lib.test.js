@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
 const validateQuestion = require('../../middleware/validateQuestion');
-const {Question} = require('../../schema/questionSchema');
+const validateUser = require('../../middleware/validateUser');
+const validateLogin = require('../../middleware/validateLogin');
+
 
 
 describe('user.generateAuthToken', () => {
@@ -17,7 +19,6 @@ describe('user.generateAuthToken', () => {
     });
 });
 
-// Write unit tests for Validate Question
 
 describe('validateQuestion', () => {
     it('Should correctly validate type field within question object', () => {
@@ -61,18 +62,70 @@ describe('validateQuestion', () => {
 
         expect(validate.error.details[0].message).toEqual("\"possibleAnswers\" is required");
     });
+
+    it('Should return payload object if all information exists', () => {
+        const payload = {question: "this is a question", type: "type", category: "test1", possibleAnswers: ["here are", "some possible", "answers"], correctAnswer: "answer"};
+        const validate = validateQuestion(payload);
+
+        expect(validate.value).toEqual(payload);
+    });
     
 });
 
+describe('validateUser', () => {
+    it('Should correctly validate password existance within user object', () => {
+        const payload = {name: "Bob Smith", email:"test@email.com"};
+        const validate = validateUser(payload);
 
+        expect(validate.error.details[0].message).toEqual("\"password\" is required");
+    });
 
+    it('Should correctly validate name existance within user object', () => {
+        const payload = {email:"test@email.com", password: "password"};
+        const validate = validateUser(payload);
 
+        expect(validate.error.details[0].message).toEqual("\"name\" is required");
+    });
 
-// Write unit tests for Validate User
+    it('Should correctly validate email existance within user object', () => {
+        const payload = {name: "Bob Smith", password: "password"};
+        const validate = validateUser(payload);
 
+        expect(validate.error.details[0].message).toEqual("\"email\" is required");
+    });
 
-// Write unit tests for Validate Login
+    it('Should return payload object if all information exists', () => {
+        const payload = {name: "Bob Smith", email:"test@email.com", password: "password"};
+        const validate = validateUser(payload);
 
+        expect(validate.value).toEqual(payload);
+    });
+
+});
+
+describe('validateLogin', () => {
+    it('Should correctly validate password existance existance within login process', () => {
+        const payload = {email:"test@email.com"};
+        const validate = validateLogin(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"password\" is required");
+    });
+
+    it('Should correctly validate password existance existance within login process', () => {
+        const payload = {password: "password"};
+        const validate = validateLogin(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"email\" is required");
+    });
+
+    it('Should return payload object if all information exists', () => {
+        const payload = {email:"test@email.com", password: "password"};
+        const validate = validateLogin(payload);
+
+        expect(validate.value).toEqual(payload);
+    });
+
+});
 
 // Possible unit tests for Question Schema
 
