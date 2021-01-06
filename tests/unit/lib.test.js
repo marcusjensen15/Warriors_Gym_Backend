@@ -20,14 +20,51 @@ describe('user.generateAuthToken', () => {
 // Write unit tests for Validate Question
 
 describe('validateQuestion', () => {
-    it('Should correctly validate user questions', () => {
-        const payload = {question: "This is a test questionaaaaaaaaaaaaaaaa", category: "test1", possibleAnswers: ["here are", "some possible", "answers"], correctAnswer: "answer"};
-        // const question = new Question(payload);
+    it('Should correctly validate type field within question object', () => {
+        const payload = {question: "This is a test question", category: "test1", possibleAnswers: ["here are", "some possible", "answers"], correctAnswer: "answer"};
         const validate = validateQuestion(payload);
 
         expect(validate.error.details[0].message).toEqual("\"type\" is required");
     });
+
+    it('Should correctly validate category within question object', () => {
+        const payload = {question: "This is a test question", type: "type", possibleAnswers: ["here are", "some possible", "answers"], correctAnswer: "answer"};
+        const validate = validateQuestion(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"category\" is required");
+    });
+
+    it('Should correctly validate correctAnswer within question object', () => {
+        const payload = {question: "This is a test question", type: "type", category: "test1", possibleAnswers: ["here are", "some possible", "answers"]};
+        const validate = validateQuestion(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"correctAnswer\" is required");
+    });
+
+    it('Should correctly validate question within question object', () => {
+        const payload = {type: "type", category: "test1", possibleAnswers: ["here are", "some possible", "answers"], correctAnswer: "answer"};
+        const validate = validateQuestion(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"question\" is required");
+    });
+
+    it('Should correctly validate possibleAnswers array', () => {
+        const payload = {question: "this is a question", type: "type", category: "test1", possibleAnswers: "this is not an array", correctAnswer: "answer"};
+        const validate = validateQuestion(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"possibleAnswers\" must be an array");
+    });
+
+    it('Should correctly validate possibleAnswers existance within question object', () => {
+        const payload = {question: "this is a question", type: "type", category: "test1", correctAnswer: "answer"};
+        const validate = validateQuestion(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"possibleAnswers\" is required");
+    });
+    
 });
+
+
 
 
 
