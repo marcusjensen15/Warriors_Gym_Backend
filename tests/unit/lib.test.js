@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
 const validateQuestion = require('../../middleware/validateQuestion');
-const {Question} = require('../../schema/questionSchema');
+const validateUser = require('../../middleware/validateUser');
+
 
 
 describe('user.generateAuthToken', () => {
@@ -17,7 +18,6 @@ describe('user.generateAuthToken', () => {
     });
 });
 
-// Write unit tests for Validate Question
 
 describe('validateQuestion', () => {
     it('Should correctly validate type field within question object', () => {
@@ -64,14 +64,34 @@ describe('validateQuestion', () => {
     
 });
 
+describe('validateUser', () => {
+    it('Should correctly validate password existance within user object', () => {
+        const payload = {name: "Bob Smith", email:"test@email.com"};
+        const validate = validateUser(payload);
 
+        expect(validate.error.details[0].message).toEqual("\"password\" is required");
+    });
 
+    it('Should correctly validate name existance within user object', () => {
+        const payload = {email:"test@email.com", password: "password"};
+        const validate = validateUser(payload);
 
+        expect(validate.error.details[0].message).toEqual("\"name\" is required");
+    });
 
-// Write unit tests for Validate User
+    it('Should correctly validate email existance within user object', () => {
+        const payload = {name: "Bob Smith", password: "password"};
+        const validate = validateUser(payload);
+
+        expect(validate.error.details[0].message).toEqual("\"email\" is required");
+    });
+
+});
 
 
 // Write unit tests for Validate Login
+
+
 
 
 // Possible unit tests for Question Schema
