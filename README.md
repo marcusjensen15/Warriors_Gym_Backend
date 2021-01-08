@@ -4,7 +4,7 @@
 
 ### Below are the steps to follow to get Warriors Gym up and running:
 
-1. Navigate to the cloned folder within terminal and run: `npm i`
+1. Navigate to the cloned folder within terminal and run: `npm i`.
 
 2. Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey=<Input_Security_Key_Here>`. MAKE SURE THERE ARE NO SPACES.
 
@@ -12,7 +12,7 @@
 
 4. May need to start MongoDB in a seperate terminal if you don't already have it running as a background process (see instructions for that below).
 
-5. In a seperate terminal tab, you keep your testing enviornment ongoing by running `npm test`
+5. In a seperate terminal tab, you keep your testing enviornment ongoing by running `npm test`.
 
 ### Below is a guide to using the endpoints in Postman:
 
@@ -44,7 +44,7 @@
 6. How to create new questions in Warriors Gym:
     1. Your privleges must be 'manager'. Follow the steps above to set up correctly.
     2. Repeat the process of copying the token string and pasting within the 'Header' of the request.
-    3. See an example [here](https://user-images.githubusercontent.com/56521797/103185832-f5aa9180-4872-11eb-9c81-0dc28bb3317d.png)
+    3. See an example [here](https://user-images.githubusercontent.com/56521797/103185832-f5aa9180-4872-11eb-9c81-0dc28bb3317d.png).
 
 
 #### Start and stop MongoDB Process on MacOS:
