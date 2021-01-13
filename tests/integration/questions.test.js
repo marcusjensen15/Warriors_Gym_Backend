@@ -15,14 +15,19 @@ describe('/questions', () => {
 
 
     });
+});    
 
-
-    describe('GET /questions/:category', () => {
-        it('Should return error code 401 because we are trying to access the route with no token', async () => {
-            const res = await request(server).get('/questions/category');
-            expect(res.status).toEqual(401);
-        });
+describe('GET /questions/:category', () => {
+    it('Should return error code 401 because we are trying to access the route with no token', async () => {
+        const res = await request(server).get('/questions/category');
+        expect(res.status).toEqual(401);
     });
-
-
 });
+
+describe('GET /questions/:category/:id', () => {
+    it('Should return error code 401 because we are trying to access the route with no token', async () => {
+        const res = await request(server).get('/questions/category/1234');
+        expect(res.status).toEqual(401);
+    });
+});
+
