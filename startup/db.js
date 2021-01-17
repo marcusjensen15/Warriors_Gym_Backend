@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const winston = require('winston');
+const config = require('config');
 
 module.exports = function(){
-    mongoose.connect('mongodb://localhost:27017/warriors_gym')
-    .then(() => winston.info('Connected to mongodb db'));
+    const db = config.get('db');
+    mongoose.connect(db)
+    .then(() => winston.info(`Connected to ${db}`));
 
 };
