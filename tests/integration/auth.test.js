@@ -1,29 +1,50 @@
 const request = require('supertest');
 const {User} = require('../../schema/userSchema');
 
-describe('auth protected routes', () => {
+// Create object with 3 dummy users: normal user, admin user, manager user. Populate db and tear down after every test run.
+// Eventually, see a test database so we don't need to do this anymore.
 
-    beforeEach(() => { server = require('../../index'); });
+describe('auth protected routes', () => {
+    let token;
+    beforeEach(async () => { 
+        server = require('../../index');
+        token = new User().generateAuthToken();
+        await User.collection.insertMany([
+            {email: "testUser@email.com", password: "123454"},
+            {email: "testAdmin@email.com", password: "123454", isAdmin: true},
+            {email: "testManager@email.com", password: "123454", isManager: true}
+        ]);
+    });
     afterEach(async () => { 
         server.close();
         await User.remove({}); 
     });
-    let token;
-    const exec = () => {
+    
+    const executeUsersGetRoutes = () => {
         return request(server)
-        .post('/users')
+        .get('/users')
         .set('x-auth-token', token)
         .send({email: 'test@email.com', password: '12345'});
     };
-    beforeEach(() => { 
-        token = new User().generateAuthToken();
-    });
 
-     describe('users auth routes', () => {
-        it('should return 401 if no token is provided', async () => {
-            token = null;
-            const res = await exec();
-            expect(res.status).toBe(401);
+     describe('GET: /users authentication routes', () => {
+        it('should return status 400 if token is incorrect', async () => {
+            token = "xyz";
+            const res = await executeUsersGetRoutes();
+            expect(res.status).toBe(400);
         });
+
+        it('should return status 403 if token is correct but access is forbidden', async () => {
+            const res = await executeUsersGetRoutes();
+            expect(res.status).toBe(403);
+        });
+
+        it('should return status 200 if token indicates admin user ', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            token = user.generateAuthToken();
+            const res = await executeUsersGetRoutes();
+            expect(res.status).toBe(200);
+        });
+
     });
 });
