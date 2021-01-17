@@ -19,7 +19,6 @@ describe('Questions Routes', () => {
             expect(res.status).toEqual(401);
         });
 
-
     });
  
 
@@ -46,7 +45,6 @@ describe('Questions Routes', () => {
             const res = await request(server).put('/questions/category/1234').send(payload);
             expect(res.status).toEqual(401);
         });
-
     });
 });
 
