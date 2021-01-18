@@ -21,16 +21,22 @@ describe('auth protected routes', () => {
         await User.remove({}); 
     });
     
-    const executeUsersGetRoutes = () => {
+    const executeUsersGetRequest = () => {
         return request(server)
         .get('/users')
         .set('x-auth-token', token);
     };
 
-    const executeUsersPostRoutes = (payload) => {
+    const executeUsersPostRequest = (payload) => {
         return request(server)
         .post('/users')
         .send(payload);
+    };
+
+    const executeUsersMeGetRequest = () => {
+        return request(server)
+        .get('/users/me')
+        .set('x-auth-token', token);
     };
 
 // All possible outcomes for GET: /users
@@ -38,19 +44,19 @@ describe('auth protected routes', () => {
      describe('GET: /users authentication routes', () => {
         it('should return status 400 if token is incorrect', async () => {
             token = "xyz";
-            const res = await executeUsersGetRoutes();
+            const res = await executeUsersGetRequest();
             expect(res.status).toBe(400);
         });
 
         it('should return status 403 if token is correct but access is forbidden', async () => {
-            const res = await executeUsersGetRoutes();
+            const res = await executeUsersGetRequest();
             expect(res.status).toBe(403);
         });
 
         it('should return status 200 if token indicates admin user ', async () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             token = user.generateAuthToken();
-            const res = await executeUsersGetRoutes();
+            const res = await executeUsersGetRequest();
             expect(res.status).toBe(200);
         });
     });
@@ -61,26 +67,39 @@ describe('auth protected routes', () => {
         
         it('should return status 200 if user credentials are appropriate', async () => {
             const payload = {email: "test123@test.com", password: "12345", name: "My Test"};
-            const res = await executeUsersPostRoutes(payload);
+            const res = await executeUsersPostRequest(payload);
             expect(res.status).toBe(200);
         });
 
         it('should return status 400 if email is not included in request payload', async () => {
             const payload = {password: "12345", name: "My Test"};
-            const res = await executeUsersPostRoutes(payload);
+            const res = await executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('should return status 400 if name is not included in request payload', async () => {
             const payload = {email: "test123@test.com", password: "12345"};
-            const res = await executeUsersPostRoutes(payload);
+            const res = await executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('should return status 400 if password is not included in request payload', async () => {
             const payload = {email: "test123@test.com", name: "My Test"};
-            const res = await executeUsersPostRoutes(payload);
+            const res = await executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
     });
+
+// All possible outcomes for GET: /users/me
+
+describe('POST: /users create a user', () => {
+        
+    it('should return status 200 if user credentials match an existing user', async () => {
+        const user = await User.findOne({email: 'testAdmin@email.com'});
+        token = user.generateAuthToken();
+        const res = await executeUsersMeGetRequest();
+        expect(res.status).toBe(200);
+        });
+    });
+
 });
