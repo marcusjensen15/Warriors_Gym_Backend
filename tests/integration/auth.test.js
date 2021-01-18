@@ -4,6 +4,7 @@ const {User} = require('../../schema/userSchema');
 // Create object with 3 dummy users: normal user, admin user, manager user. Populate db and tear down after every test run.
 // Eventually, see a test database so we don't need to do this anymore.
 // Break this out into different files based on route, otherwise this is going to be one huge file. 
+// Will need to rename these testing functions. The way they are written now, intelisense is almost useless
 
 describe('auth protected routes', () => {
     let token;
@@ -37,6 +38,13 @@ describe('auth protected routes', () => {
         return request(server)
         .get('/users/me')
         .set('x-auth-token', token);
+    };
+
+    const executeUsersMePutRequest = (payload) => {
+        return request(server)
+        .put('/users/me')
+        .set('x-auth-token', token)
+        .send(payload);
     };
 
 // All possible outcomes for GET: /users
@@ -120,4 +128,57 @@ describe('auth protected routes', () => {
             });
         });
 
+// All possible outcomes for PUT: /users/me
+
+    describe('PUT: /users/me requests', () => {
+    
+        it('should return status 200 if user credentials match an existing user, and payload contains all appropriate fields', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            token = user.generateAuthToken();
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(200);
+            });
+        
+        it('should return status 400 if user credentials match an existing user, but payload does not contain password', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {name: "Test Name", email: "test@test.com"}
+            token = user.generateAuthToken();
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(400);
+            });
+        
+        it('should return status 400 if user credentials match an existing user, but payload does not contain email', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {name: "Test Name", password: "12345"}
+            token = user.generateAuthToken();
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(400);
+            });
+
+        it('should return status 400 if user credentials match an existing user, but payload does not contain name', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {email: "test@test.com", password: "12345"}
+            token = user.generateAuthToken();
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(400);
+            });
+        
+        it('should return status 400 if token is not valid', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            token = "xyz";
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(400);
+            });
+            
+        it('should return status 401 if no token is provided', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            token = "";
+            const res = await executeUsersMePutRequest(payload);
+            expect(res.status).toBe(401);
+            });     
+
+    });
 });
