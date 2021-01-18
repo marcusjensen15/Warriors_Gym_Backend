@@ -48,6 +48,12 @@ describe('auth protected routes', () => {
             expect(res.status).toBe(400);
         });
 
+        it('should return status 401 if token is not provided', async () => {
+            token = "";
+            const res = await executeUsersGetRequest();
+            expect(res.status).toBe(401);
+        });
+
         it('should return status 403 if token is correct but access is forbidden', async () => {
             const res = await executeUsersGetRequest();
             expect(res.status).toBe(403);
@@ -92,14 +98,26 @@ describe('auth protected routes', () => {
 
 // All possible outcomes for GET: /users/me
 
-describe('POST: /users create a user', () => {
+    describe('GET: /users/me requests', () => {
+            
+        it('should return status 200 if user credentials match an existing user', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            token = user.generateAuthToken();
+            const res = await executeUsersMeGetRequest();
+            expect(res.status).toBe(200);
+            });
         
-    it('should return status 200 if user credentials match an existing user', async () => {
-        const user = await User.findOne({email: 'testAdmin@email.com'});
-        token = user.generateAuthToken();
-        const res = await executeUsersMeGetRequest();
-        expect(res.status).toBe(200);
+        it('should return status 400 if token is not valid', async () => {
+            token = "xyz";
+            const res = await executeUsersMeGetRequest();
+            expect(res.status).toBe(400);
+            });
+        
+        it('should return status 401 if no token is provided', async () => {
+            token = "";
+            const res = await executeUsersMeGetRequest();
+            expect(res.status).toBe(401);
+            });
         });
-    });
 
 });
