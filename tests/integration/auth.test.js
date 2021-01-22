@@ -47,6 +47,12 @@ describe('auth protected routes', () => {
         .send(payload);
     };
 
+    const executeUsersDeleteRequest = (user) => {
+        return request(server)
+        .delete(`/users/${user._id}`)
+        .set('x-auth-token', token);
+    };
+
 // All possible outcomes for GET: /users
 
      describe('GET: /users authentication routes', () => {
@@ -181,4 +187,42 @@ describe('auth protected routes', () => {
             });     
 
     });
+
+
+// All possible outcomes for DELETE: users/:id
+
+    describe('DELETE: /users/:id requests', () => {
+        
+        it('should return status 200 if the user attempting to make a delete is an admin, and the admin user was sucessfully found and deleted', async () => {
+            const user = await User.findOne({email: 'testAdmin@email.com'});
+            token = user.generateAuthToken();
+            const res = await executeUsersDeleteRequest(user);
+            expect(res.status).toBe(200);
+            });
+
+        it('should return status 403 if user credentials are non admin. Only admin users can delete users', async () => {
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = user.generateAuthToken();
+            const res = await executeUsersDeleteRequest(user);
+            expect(res.status).toBe(403);
+            });
+
+        it('should return status 200 if the admin user is trying to delete another user', async () => {
+            const adminUser = await User.findOne({email: 'testAdmin@email.com'});
+            const userToDelete = await User.findOne({email: 'testUser@email.com'});
+            token = adminUser.generateAuthToken();
+            const res = await executeUsersDeleteRequest(userToDelete);
+            expect(res.status).toBe(200);
+            });
+
+        it('should return status 401 if the token is not provided', async () => {
+            const adminUser = await User.findOne({email: 'testAdmin@email.com'});
+            const userToDelete = await User.findOne({email: 'testUser@email.com'});
+            token = "";
+            const res = await executeUsersDeleteRequest(userToDelete);
+            expect(res.status).toBe(401);
+            });
+        
+    });
+
 });
