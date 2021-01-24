@@ -222,7 +222,15 @@ describe('auth protected routes', () => {
             const res = await executeUsersDeleteRequest(userToDelete);
             expect(res.status).toBe(401);
             });
-        
+
+        it('should return status 400 if the token is not valid', async () => {
+            const adminUser = await User.findOne({email: 'testAdmin@email.com'});
+            const userToDelete = await User.findOne({email: 'testUser@email.com'});
+            token = "xyz";
+            const res = await executeUsersDeleteRequest(userToDelete);
+            expect(res.status).toBe(400);
+            });
+    
     });
 
 });
