@@ -2,7 +2,7 @@ const request = require('supertest');
 const {User} = require('../../schema/userSchema');
 // const { UsersTestingMethods } = require('./usersRoutes/usersRoutesTestingConstants');
 // const handler = new UsersTestingMethods();
-const usersTestingMethods = require('./usersRoutes/usersRoutesTestingConstants');
+const UsersTestingMethods = require('./usersRoutes/usersRoutesTestingConstants');
 
 // Create object with 3 dummy users: normal user, admin user, manager user. Populate db and tear down after every test run.
 // Eventually, see a test database so we don't need to do this anymore.
@@ -57,25 +57,25 @@ describe('auth protected routes', () => {
      describe('GET: /users authentication routes', () => {
         it('should return status 400 if token is incorrect', async () => {
             token = "xyz";
-            const res = await usersTestingMethods.executeUsersGetRequest(token);
+            const res = await UsersTestingMethods.executeUsersGetRequest(token);
             expect(res.status).toBe(400);
         });
 
         it('should return status 401 if token is not provided', async () => {
             token = "";
-            const res = await usersTestingMethods.executeUsersGetRequest(token);
+            const res = await UsersTestingMethods.executeUsersGetRequest(token);
             expect(res.status).toBe(401);
         });
 
         it('should return status 403 if token is correct but access is forbidden', async () => {
-            const res = await usersTestingMethods.executeUsersGetRequest(token);
+            const res = await UsersTestingMethods.executeUsersGetRequest(token);
             expect(res.status).toBe(403);
         });
 
         it('should return status 200 if token indicates admin user ', async () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             token = user.generateAuthToken();
-            const res = await usersTestingMethods.executeUsersGetRequest(token);
+            const res = await UsersTestingMethods.executeUsersGetRequest(token);
             expect(res.status).toBe(200);
         });
     });
