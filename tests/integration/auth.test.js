@@ -1,8 +1,8 @@
 const request = require('supertest');
 const {User} = require('../../schema/userSchema');
-// const { UsersTestingMethods } = require('./usersRoutes/usersRoutesTestingConstants');
-// const handler = new UsersTestingMethods();
 const UsersTestingMethods = require('./usersRoutes/usersRoutesTestingConstants');
+
+
 
 // Create object with 3 dummy users: normal user, admin user, manager user. Populate db and tear down after every test run.
 // Eventually, see a test database so we don't need to do this anymore.
@@ -24,33 +24,6 @@ describe('auth protected routes', () => {
         server.close();
         await User.remove({}); 
     });
-    
-
-
-    const executeUsersPostRequest = (payload) => {
-        return request(server)
-        .post('/users')
-        .send(payload);
-    };
-
-    const executeUsersMeGetRequest = () => {
-        return request(server)
-        .get('/users/me')
-        .set('x-auth-token', token);
-    };
-
-    const executeUsersMePutRequest = (payload) => {
-        return request(server)
-        .put('/users/me')
-        .set('x-auth-token', token)
-        .send(payload);
-    };
-
-    const executeUsersDeleteRequest = (user) => {
-        return request(server)
-        .delete(`/users/${user._id}`)
-        .set('x-auth-token', token);
-    };
 
 // All possible outcomes for GET: /users
 
@@ -86,25 +59,25 @@ describe('auth protected routes', () => {
         
         it('should return status 200 if user credentials are appropriate', async () => {
             const payload = {email: "test123@test.com", password: "12345", name: "My Test"};
-            const res = await executeUsersPostRequest(payload);
+            const res = await UsersTestingMethods.executeUsersPostRequest(payload);
             expect(res.status).toBe(200);
         });
 
         it('should return status 400 if email is not included in request payload', async () => {
             const payload = {password: "12345", name: "My Test"};
-            const res = await executeUsersPostRequest(payload);
+            const res = await UsersTestingMethods.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('should return status 400 if name is not included in request payload', async () => {
             const payload = {email: "test123@test.com", password: "12345"};
-            const res = await executeUsersPostRequest(payload);
+            const res = await UsersTestingMethods.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('should return status 400 if password is not included in request payload', async () => {
             const payload = {email: "test123@test.com", name: "My Test"};
-            const res = await executeUsersPostRequest(payload);
+            const res = await UsersTestingMethods.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
     });
@@ -116,19 +89,19 @@ describe('auth protected routes', () => {
         it('should return status 200 if user credentials match an existing user', async () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             token = user.generateAuthToken();
-            const res = await executeUsersMeGetRequest();
+            const res = await UsersTestingMethods.executeUsersMeGetRequest(token);
             expect(res.status).toBe(200);
             });
         
         it('should return status 400 if token is not valid', async () => {
             token = "xyz";
-            const res = await executeUsersMeGetRequest();
+            const res = await UsersTestingMethods.executeUsersMeGetRequest(token);
             expect(res.status).toBe(400);
             });
         
         it('should return status 401 if no token is provided', async () => {
             token = "";
-            const res = await executeUsersMeGetRequest();
+            const res = await UsersTestingMethods.executeUsersMeGetRequest(token);
             expect(res.status).toBe(401);
             });
         });
@@ -141,7 +114,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
             token = user.generateAuthToken();
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(200);
             });
         
@@ -149,7 +122,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {name: "Test Name", email: "test@test.com"}
             token = user.generateAuthToken();
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
             });
         
@@ -157,7 +130,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {name: "Test Name", password: "12345"}
             token = user.generateAuthToken();
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
             });
 
@@ -165,7 +138,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {email: "test@test.com", password: "12345"}
             token = user.generateAuthToken();
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
             });
         
@@ -173,7 +146,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
             token = "xyz";
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
             });
             
@@ -181,7 +154,7 @@ describe('auth protected routes', () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
             token = "";
-            const res = await executeUsersMePutRequest(payload);
+            const res = await UsersTestingMethods.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(401);
             });     
 
@@ -195,14 +168,14 @@ describe('auth protected routes', () => {
         it('should return status 200 if the user attempting to make a delete is an admin, and the admin user was sucessfully found and deleted', async () => {
             const user = await User.findOne({email: 'testAdmin@email.com'});
             token = user.generateAuthToken();
-            const res = await executeUsersDeleteRequest(user);
+            const res = await UsersTestingMethods.executeUsersDeleteRequest(user, token);
             expect(res.status).toBe(200);
             });
 
         it('should return status 403 if user credentials are non admin. Only admin users can delete users', async () => {
             const user = await User.findOne({email: 'testUser@email.com'});
             token = user.generateAuthToken();
-            const res = await executeUsersDeleteRequest(user);
+            const res = await UsersTestingMethods.executeUsersDeleteRequest(user, token);
             expect(res.status).toBe(403);
             });
 
@@ -210,7 +183,7 @@ describe('auth protected routes', () => {
             const adminUser = await User.findOne({email: 'testAdmin@email.com'});
             const userToDelete = await User.findOne({email: 'testUser@email.com'});
             token = adminUser.generateAuthToken();
-            const res = await executeUsersDeleteRequest(userToDelete);
+            const res = await UsersTestingMethods.executeUsersDeleteRequest(userToDelete, token);
             expect(res.status).toBe(200);
             });
 
@@ -218,7 +191,7 @@ describe('auth protected routes', () => {
             const adminUser = await User.findOne({email: 'testAdmin@email.com'});
             const userToDelete = await User.findOne({email: 'testUser@email.com'});
             token = "";
-            const res = await executeUsersDeleteRequest(userToDelete);
+            const res = await UsersTestingMethods.executeUsersDeleteRequest(userToDelete, token);
             expect(res.status).toBe(401);
             });
 
@@ -226,7 +199,7 @@ describe('auth protected routes', () => {
             const adminUser = await User.findOne({email: 'testAdmin@email.com'});
             const userToDelete = await User.findOne({email: 'testUser@email.com'});
             token = "xyz";
-            const res = await executeUsersDeleteRequest(userToDelete);
+            const res = await UsersTestingMethods.executeUsersDeleteRequest(userToDelete, token);
             expect(res.status).toBe(400);
             });
     
