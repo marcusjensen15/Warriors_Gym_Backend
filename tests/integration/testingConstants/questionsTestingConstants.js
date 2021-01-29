@@ -7,5 +7,13 @@ const executeQuestionsGetRequest = (token) => {
     .set('x-auth-token', token);
 };
 
+const executeQuestionsPostRequest = (payload, token) => {
+    return request(server)
+    .post('/questions')
+    .set('x-auth-token', token)
+    .send(payload);
+};
+
 
 exports.executeQuestionsGetRequest = executeQuestionsGetRequest;
+exports.executeQuestionsPostRequest = executeQuestionsPostRequest;

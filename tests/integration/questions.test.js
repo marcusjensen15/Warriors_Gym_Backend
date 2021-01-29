@@ -1,5 +1,6 @@
 const request = require('supertest');
 const {User} = require('../../schema/userSchema');
+const {Question} = require('../../schema/questionSchema');
 const QuestionsTestingConstants = require('./testingConstants/questionsTestingConstants');
 
 // Write test first for all 401 errors
@@ -7,6 +8,7 @@ const QuestionsTestingConstants = require('./testingConstants/questionsTestingCo
 // Will need to generate token, the same way as the user tests.
 
 describe('All questions routes', () => {
+
     beforeEach(async () => {
         server = require('../../index');
         await User.collection.insertMany([
@@ -15,6 +17,7 @@ describe('All questions routes', () => {
            {email: "testManager@email.com", password: "123454", isManager: true}
        ]);
     });
+
     afterEach(async() => {
         server.close();
         await User.remove({});
@@ -45,13 +48,68 @@ describe('All questions routes', () => {
 
     });
  
+// All possible outcomes for POST: /questions
 
-    // describe('/questions/:category', () => {
-    //     it('Should return error code 401 because we are trying to access the route with no token', async () => {
-    //         const res = await request(server).get('/questions/category');
-    //         expect(res.status).toEqual(401);
-    //     });
-    // });
+
+    describe('POST: /questions', () => {
+
+        it('Should return error code 401 because we are trying to access the route with no token', async () => {
+            token = "";
+            payload = new Question({
+                        questionText: "A new question",
+                        type: "Type",
+                        category: "A category",
+                        possibleAnswers: ["some good", "options", "here"],
+                        correctAnswer: "options"
+            });
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(401);
+        });
+
+        it('Should return error code 400 because we are trying to access the route with an invalid token', async () => {
+            token = "xyz";
+            payload = new Question({
+                        questionText: "A new question",
+                        type: "Type",
+                        category: "A category",
+                        possibleAnswers: ["some good", "options", "here"],
+                        correctAnswer: "options"
+            });
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return error code 403 because we are trying to access the route with non-manager credentials', async () => {
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = user.generateAuthToken();
+            payload = new Question({
+                        questionText: "A new question",
+                        type: "Type",
+                        category: "A category",
+                        possibleAnswers: ["some good", "options", "here"],
+                        correctAnswer: "options"
+            });
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(403);
+        });
+
+        it('Should return code 200 because we are making the request with manager credentials', async () => {
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = new Question({
+                        questionText: "A new question",
+                        type: "Type",
+                        category: "A category",
+                        possibleAnswers: ["some good", "options", "here"],
+                        correctAnswer: "options"
+            });
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(200);
+        });
+
+
+
+    });
 
     // describe('/questions/:category/:id', () => {
     //     it('GET: Should return error code 401 because we are trying to access the route with no token', async () => {
