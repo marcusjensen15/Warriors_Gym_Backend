@@ -3,7 +3,6 @@ const {User} = require('../../schema/userSchema');
 const {Question} = require('../../schema/questionSchema');
 const QuestionsTestingConstants = require('./testingConstants/questionsTestingConstants');
 
-// Write test first for all 401 errors
 // Before each and after each functions will look really similar to the users routes before/after each. 
 // Will need to generate token, the same way as the user tests.
 
@@ -54,59 +53,104 @@ describe('All questions routes', () => {
     describe('POST: /questions', () => {
 
         it('Should return error code 401 because we are trying to access the route with no token', async () => {
+
             token = "";
-            payload = new Question({
-                        questionText: "A new question",
-                        type: "Type",
-                        category: "A category",
-                        possibleAnswers: ["some good", "options", "here"],
-                        correctAnswer: "options"
-            });
+            payload = QuestionsTestingConstants.completePayload;
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(401);
         });
 
         it('Should return error code 400 because we are trying to access the route with an invalid token', async () => {
+
             token = "xyz";
-            payload = new Question({
-                        questionText: "A new question",
-                        type: "Type",
-                        category: "A category",
-                        possibleAnswers: ["some good", "options", "here"],
-                        correctAnswer: "options"
-            });
+            payload = QuestionsTestingConstants.completePayload;
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(400);
         });
 
         it('Should return error code 403 because we are trying to access the route with non-manager credentials', async () => {
+
             const user = await User.findOne({email: 'testUser@email.com'});
             token = user.generateAuthToken();
-            payload = new Question({
-                        questionText: "A new question",
-                        type: "Type",
-                        category: "A category",
-                        possibleAnswers: ["some good", "options", "here"],
-                        correctAnswer: "options"
-            });
+            payload = QuestionsTestingConstants.completePayload;
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(403);
         });
 
-    //I think its throwing because the payload is in the wrong format
         it('Should return code 200 because we are making the request with manager credentials', async () => {
+
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
-            payload = {
-                        question: "A new question",
-                        type: "Type",
-                        category: "A category",
-                        possibleAnswers: ["some good", "options", "here"],
-                        correctAnswer: "options"
-            };
+            payload = QuestionsTestingConstants.completePayload;
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(200);
         });
+
+        it('Should return code 400 because the payload is missing the question field', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadMissingQuestion;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 400 because the payload question is not 10 characters', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadQuestionNotLongEnough;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 400 because the payload is missing the type field', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadMissingType;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 400 because the payload is missing the category field', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadMissingCategory;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 400 because the payload is missing the possible answers array', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadMissingPossibleAnswers;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 400 because the payload is not an array', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadPossibleAnswersNotArray;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+
+        it('Should return code 400 because the payload is missing the correct answer', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.payloadMissingCorrectAnswer;
+            const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
+            expect(res.status).toEqual(400);
+        });
+
+
 
 
 
