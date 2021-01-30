@@ -93,16 +93,17 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(403);
         });
 
+    //I think its throwing because the payload is in the wrong format
         it('Should return code 200 because we are making the request with manager credentials', async () => {
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
-            payload = new Question({
-                        questionText: "A new question",
+            payload = {
+                        question: "A new question",
                         type: "Type",
                         category: "A category",
                         possibleAnswers: ["some good", "options", "here"],
                         correctAnswer: "options"
-            });
+            };
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(200);
         });
