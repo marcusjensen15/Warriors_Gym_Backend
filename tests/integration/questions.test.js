@@ -15,11 +15,15 @@ describe('All questions routes', () => {
            {email: "testAdmin@email.com", password: "123454", isAdmin: true},
            {email: "testManager@email.com", password: "123454", isManager: true}
        ]);
+       await Question.collection.insertMany([
+        QuestionsTestingConstants.completePayload, QuestionsTestingConstants.completePayload2
+       ]);
     });
 
     afterEach(async() => {
         server.close();
         await User.remove({});
+        await Question.remove({});
      });
 
 // All possible outcomes for GET: /questions
@@ -81,7 +85,7 @@ describe('All questions routes', () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
-            payload = QuestionsTestingConstants.completePayload;
+            payload = QuestionsTestingConstants.completePayload3;
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(200);
         });
@@ -149,11 +153,21 @@ describe('All questions routes', () => {
             const res = await QuestionsTestingConstants.executeQuestionsPostRequest(payload, token);
             expect(res.status).toEqual(400);
         });
+    });
+
+// All possible outcomes for GET: /questions/:category
 
 
+    describe('GET: /questions/:category', () => {
 
+        it('Should return error code 200: valid token', async () => {
 
-
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            payload = QuestionsTestingConstants.completePayload;
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(payload, token);
+            expect(res.status).toEqual(200);
+        });
     });
 
     // describe('/questions/:category/:id', () => {
