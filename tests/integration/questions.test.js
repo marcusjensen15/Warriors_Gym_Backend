@@ -167,7 +167,38 @@ describe('All questions routes', () => {
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
             expect(res.status).toEqual(200);
         });
+
+        it('Should return error code 401: no token', async () => {
+
+            token = "";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
+            expect(res.status).toEqual(401);
+        });
+
+        it('Should return error code 400: invalid token', async () => {
+
+            token = "xyz";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
+            expect(res.status).toEqual(400);
+        });
     });
+
+// All possible outcomes for GET: /questions/:category/:id
+
+    describe('GET: /questions/:category/:id', () => {
+
+        it('Should return error code 200: valid token', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
+            expect(res.status).toEqual(200);
+        });
+    });
+
+
+
 
     // describe('/questions/:category/:id', () => {
     //     it('GET: Should return error code 401 because we are trying to access the route with no token', async () => {
