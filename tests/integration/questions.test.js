@@ -164,8 +164,7 @@ describe('All questions routes', () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
-            payload = QuestionsTestingConstants.completePayload;
-            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(payload, token);
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
             expect(res.status).toEqual(200);
         });
     });
