@@ -26,6 +26,14 @@ const executeQuestionsCategoriesIdGetRequest = (token, questionId) => {
     .set('x-auth-token', token);
 };
 
+
+const executeQuestionsCategoriesIdPutRequest = (token, questionId, payload) => {
+    return request(server)
+    .put(`/questions/category/${questionId}`)
+    .set('x-auth-token', token)
+    .send(payload);
+};
+
 const completePayload = {
     question: "A new question",
     type: "Type",
@@ -106,6 +114,7 @@ exports.executeQuestionsGetRequest = executeQuestionsGetRequest;
 exports.executeQuestionsPostRequest = executeQuestionsPostRequest;
 exports.executeQuestionsCategoriesGetRequest = executeQuestionsCategoriesGetRequest;
 exports.executeQuestionsCategoriesIdGetRequest = executeQuestionsCategoriesIdGetRequest;
+exports.executeQuestionsCategoriesIdPutRequest = executeQuestionsCategoriesIdPutRequest;
 
 exports.completePayload = completePayload;
 exports.completePayload2 = completePayload2;

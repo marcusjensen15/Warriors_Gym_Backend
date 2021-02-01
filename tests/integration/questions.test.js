@@ -233,6 +233,66 @@ describe('All questions routes', () => {
         });
     });
 
+// All possible outcomes for PUT: /questions/:category/:id
+
+    describe('GET: /questions/:category/:id', () => {
+
+        it('Should return error code 200: valid token, valid payload', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
+            expect(res.status).toEqual(200);
+        });
+
+        it('Should return error code 403: insufficient credentials (token), valid payload', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
+            expect(res.status).toEqual(403);
+        });
+
+        it('Should return error code 401: no token, valid payload', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = "";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
+            expect(res.status).toEqual(401);
+        });
+
+        it('Should return error code 400: no token, valid payload', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = "xyz";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
+            expect(res.status).toEqual(400);
+        });
+
+
+        it('Should return error code 400: valid token, invalid payload', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.payloadMissingType );
+            expect(res.status).toEqual(400);
+        });
+
+
+// All possible outcomes for DELETE: /questions/:category/:id
+
+
+    });
+
+
+
+
+
 
 
 
