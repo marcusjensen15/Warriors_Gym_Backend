@@ -162,23 +162,34 @@ describe('All questions routes', () => {
 
         it('Should return error code 200: valid token', async () => {
 
+            const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
-            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token, questionCategory);
             expect(res.status).toEqual(200);
+        });
+
+        it('Should return error code 200: valid token, There are no questions for this category', async () => {
+
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token, "nonExistantCategory");
+            expect(res.text).toEqual("There are no questions for this category");
         });
 
         it('Should return error code 401: no token', async () => {
 
+            const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             token = "";
-            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token, questionCategory);
             expect(res.status).toEqual(401);
         });
 
         it('Should return error code 400: invalid token', async () => {
 
+            const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             token = "xyz";
-            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token);
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token, questionCategory);
             expect(res.status).toEqual(400);
         });
     });
@@ -194,6 +205,31 @@ describe('All questions routes', () => {
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
             expect(res.status).toEqual(200);
+        });
+
+        it('Should return error code 200: There is no question with this ID', async () => {
+
+            const questionId = "fakeId"
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
+            expect(res.text).toEqual('There is no question with this ID');
+        });
+
+        it('Should return error code 400: invalid token', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            token = "xyz";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return error code 401: no token', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
+            token = "";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
+            expect(res.status).toEqual(401);
         });
     });
 

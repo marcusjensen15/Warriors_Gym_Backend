@@ -14,9 +14,9 @@ const executeQuestionsPostRequest = (payload, token) => {
     .send(payload);
 };
 
-const executeQuestionsCategoriesGetRequest = (token) => {
+const executeQuestionsCategoriesGetRequest = (token,category) => {
     return request(server)
-    .get('/questions/category')
+    .get(`/questions/${category}`)
     .set('x-auth-token', token);
 };
 
