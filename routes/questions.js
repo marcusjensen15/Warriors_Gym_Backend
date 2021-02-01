@@ -10,8 +10,8 @@ const manager = require('../middleware/manager');
 
 router.get('/:category', authMiddleware, async (req, res) => {
 
-    const questionType = req.params.category;
-    let results = await Question.find({category: questionType });
+    const questionCategory = req.params.category;
+    let results = await Question.find({category: questionCategory });
 
     if (results.length === 0){
         results = "There are no questions for this category"
