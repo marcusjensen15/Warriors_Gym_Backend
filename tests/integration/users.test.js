@@ -1,6 +1,6 @@
 const request = require('supertest');
 const {User} = require('../../schema/userSchema');
-const UsersTestingConstants = require('./testingConstants/usersTestingConstants');
+const UsersTestingConstants = require('../testingConstants/usersTestingConstants');
 
 describe('All users routes ', () => {
 
