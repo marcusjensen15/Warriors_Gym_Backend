@@ -32,11 +32,21 @@ const executeUsersDeleteRequest = (user, token) => {
     .set('x-auth-token', token);
 };
 
+const completeUserPayload = {email: "test123@test.com", password: "12345", name: "My Test"};
+const userPayloadMissingName = {email: "test123@test.com", password: "12345"};
+const userPayloadMissingEmail = {password: "12345", name: "My Test"}
+const userPayloadMissingPassword = {email: "test123@test.com", name: "My Test"};
+
 exports.executeUsersGetRequest = executeUsersGetRequest;
 exports.executeUsersPostRequest = executeUsersPostRequest;
 exports.executeUsersMeGetRequest = executeUsersMeGetRequest;
 exports.executeUsersMePutRequest = executeUsersMePutRequest;
 exports.executeUsersDeleteRequest = executeUsersDeleteRequest;
+
+exports.completeUserPayload = completeUserPayload;
+exports.userPayloadMissingEmail = userPayloadMissingEmail;
+exports.userPayloadMissingName = userPayloadMissingName;
+exports.userPayloadMissingPassword = userPayloadMissingPassword;
 
 
 

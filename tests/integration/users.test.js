@@ -57,30 +57,30 @@ describe('All users routes ', () => {
 
     describe('POST: /users - Create a User', () => {
         
-        it('Should return status 200 if user credentials are appropriate', async () => {
+        it('Should return status 200 if user credentials are appropriate, and payload is valid', async () => {
 
-            const payload = {email: "test123@test.com", password: "12345", name: "My Test"};
+            const payload = UsersTestingConstants.completeUserPayload;
             const res = await UsersTestingConstants.executeUsersPostRequest(payload);
             expect(res.status).toBe(200);
         });
 
         it('Should return status 400 if email is not included in request payload', async () => {
 
-            const payload = {password: "12345", name: "My Test"};
+            const payload = UsersTestingConstants.userPayloadMissingEmail;
             const res = await UsersTestingConstants.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('Should return status 400 if name is not included in request payload', async () => {
 
-            const payload = {email: "test123@test.com", password: "12345"};
+            const payload = UsersTestingConstants.userPayloadMissingName;
             const res = await UsersTestingConstants.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
 
         it('Should return status 400 if password is not included in request payload', async () => {
 
-            const payload = {email: "test123@test.com", name: "My Test"};
+            const payload = UsersTestingConstants.userPayloadMissingPassword;
             const res = await UsersTestingConstants.executeUsersPostRequest(payload);
             expect(res.status).toBe(400);
         });
@@ -120,7 +120,7 @@ describe('All users routes ', () => {
         it('Should return status 200 if user credentials match an existing user, and payload contains all appropriate fields', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            const payload = UsersTestingConstants.completeUserPayload;
             token = user.generateAuthToken();
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(200);
@@ -129,7 +129,7 @@ describe('All users routes ', () => {
         it('Should return status 400 if user credentials match an existing user, but payload does not contain password', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {name: "Test Name", email: "test@test.com"}
+            const payload = UsersTestingConstants.userPayloadMissingPassword;
             token = user.generateAuthToken();
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
@@ -138,7 +138,7 @@ describe('All users routes ', () => {
         it('Should return status 400 if user credentials match an existing user, but payload does not contain email', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {name: "Test Name", password: "12345"}
+            const payload = UsersTestingConstants.userPayloadMissingEmail;
             token = user.generateAuthToken();
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
@@ -147,7 +147,7 @@ describe('All users routes ', () => {
         it('Should return status 400 if user credentials match an existing user, but payload does not contain name', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {email: "test@test.com", password: "12345"}
+            const payload = UsersTestingConstants.userPayloadMissingName;
             token = user.generateAuthToken();
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
@@ -156,7 +156,7 @@ describe('All users routes ', () => {
         it('Should return status 400 if token is not valid', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            const payload = UsersTestingConstants.completeUserPayload;
             token = "xyz";
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(400);
@@ -165,7 +165,7 @@ describe('All users routes ', () => {
         it('Should return status 401 if no token is provided', async () => {
 
             const user = await User.findOne({email: 'testAdmin@email.com'});
-            const payload = {name: "Test Name", email: "test@test.com", password: "12345"}
+            const payload = UsersTestingConstants.completeUserPayload;
             token = "";
             const res = await UsersTestingConstants.executeUsersMePutRequest(payload, token);
             expect(res.status).toBe(401);
@@ -203,7 +203,6 @@ describe('All users routes ', () => {
 
         it('Should return status 401 if the token is not provided', async () => {
 
-            const adminUser = await User.findOne({email: 'testAdmin@email.com'});
             const userToDelete = await User.findOne({email: 'testUser@email.com'});
             token = "";
             const res = await UsersTestingConstants.executeUsersDeleteRequest(userToDelete, token);
@@ -212,7 +211,6 @@ describe('All users routes ', () => {
 
         it('Should return status 400 if the token is not valid', async () => {
 
-            const adminUser = await User.findOne({email: 'testAdmin@email.com'});
             const userToDelete = await User.findOne({email: 'testUser@email.com'});
             token = "xyz";
             const res = await UsersTestingConstants.executeUsersDeleteRequest(userToDelete, token);
