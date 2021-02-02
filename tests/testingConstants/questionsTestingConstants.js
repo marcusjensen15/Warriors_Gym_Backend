@@ -1,5 +1,4 @@
 const request = require('supertest');
-const {User} = require('../../../schema/userSchema');
 
 const executeQuestionsGetRequest = (token) => {
     return request(server)
@@ -85,7 +84,7 @@ const payloadMissingCategory = {
     correctAnswer: "options"
 };
 
-const payloadMissingPossibleAnswers= {
+const payloadMissingPossibleAnswers = {
     question: "A new question",
     type: "Type",
     category: "category",

@@ -1,5 +1,4 @@
 const request = require('supertest');
-const {User} = require('../../../schema/userSchema');
 
 const executeUsersGetRequest = (token) => {
     return request(server)
@@ -37,6 +36,10 @@ const userPayloadMissingName = {email: "test123@test.com", password: "12345"};
 const userPayloadMissingEmail = {password: "12345", name: "My Test"}
 const userPayloadMissingPassword = {email: "test123@test.com", name: "My Test"};
 
+const completeLoginPayload = {email:"test@email.com", password: "password"};
+const loginPayloadMissingEmail = {password: "password"};
+const loginPayloadMissingPassword = {email:"test@email.com"};
+
 exports.executeUsersGetRequest = executeUsersGetRequest;
 exports.executeUsersPostRequest = executeUsersPostRequest;
 exports.executeUsersMeGetRequest = executeUsersMeGetRequest;
@@ -47,6 +50,10 @@ exports.completeUserPayload = completeUserPayload;
 exports.userPayloadMissingEmail = userPayloadMissingEmail;
 exports.userPayloadMissingName = userPayloadMissingName;
 exports.userPayloadMissingPassword = userPayloadMissingPassword;
+
+exports.completeLoginPayload = completeLoginPayload;
+exports.loginPayloadMissingEmail = loginPayloadMissingEmail;
+exports.loginPayloadMissingPassword =loginPayloadMissingPassword;
 
 
 
