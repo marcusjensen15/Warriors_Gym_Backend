@@ -34,6 +34,12 @@ const executeQuestionsCategoriesIdPutRequest = (token, questionId, payload) => {
     .send(payload);
 };
 
+const executeQuestionsCategoriesIdDeleteRequest = (token, questionId) => {
+    return request(server)
+    .delete(`/questions/category/${questionId}`)
+    .set('x-auth-token', token);
+};
+
 const completePayload = {
     question: "A new question",
     type: "Type",
@@ -115,6 +121,7 @@ exports.executeQuestionsPostRequest = executeQuestionsPostRequest;
 exports.executeQuestionsCategoriesGetRequest = executeQuestionsCategoriesGetRequest;
 exports.executeQuestionsCategoriesIdGetRequest = executeQuestionsCategoriesIdGetRequest;
 exports.executeQuestionsCategoriesIdPutRequest = executeQuestionsCategoriesIdPutRequest;
+exports.executeQuestionsCategoriesIdDeleteRequest = executeQuestionsCategoriesIdDeleteRequest;
 
 exports.completePayload = completePayload;
 exports.completePayload2 = completePayload2;

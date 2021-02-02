@@ -3,9 +3,6 @@ const {User} = require('../../schema/userSchema');
 const {Question} = require('../../schema/questionSchema');
 const QuestionsTestingConstants = require('./testingConstants/questionsTestingConstants');
 
-// Before each and after each functions will look really similar to the users routes before/after each. 
-// Will need to generate token, the same way as the user tests.
-
 describe('All questions routes', () => {
 
     beforeEach(async () => {
@@ -48,11 +45,9 @@ describe('All questions routes', () => {
             const res = await QuestionsTestingConstants.executeQuestionsGetRequest(token);
             expect(res.status).toEqual(200);
         });
-
     });
  
 // All possible outcomes for POST: /questions
-
 
     describe('POST: /questions', () => {
 
@@ -144,7 +139,6 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-
         it('Should return code 400 because the payload is missing the correct answer', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -156,7 +150,6 @@ describe('All questions routes', () => {
     });
 
 // All possible outcomes for GET: /questions/:category
-
 
     describe('GET: /questions/:category', () => {
 
@@ -237,7 +230,7 @@ describe('All questions routes', () => {
 
     describe('GET: /questions/:category/:id', () => {
 
-        it('Should return error code 200: valid token, valid payload', async () => {
+        it('Should return code 200: valid token, valid payload', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -273,7 +266,6 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-
         it('Should return error code 400: valid token, invalid payload', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
@@ -282,13 +274,45 @@ describe('All questions routes', () => {
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.payloadMissingType );
             expect(res.status).toEqual(400);
         });
-
+    });
 
 // All possible outcomes for DELETE: /questions/:category/:id
 
+    describe('DELETE: /questions/:category/:id', () => {
 
+        it('Should return code 200: valid token with Manager Credentials, Question to delete exists', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdDeleteRequest(token, questionId);
+            expect(res.status).toEqual(200);
+        });
+
+        it('Should return code 403: valid token with Non-Manager Credentials, Question to delete exists', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
+            const user = await User.findOne({email: 'testUser@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdDeleteRequest(token, questionId);
+            expect(res.status).toEqual(403);
+        });
+
+        it('Should return code 400: invalid token, Question to delete exists', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
+            token = "xyz";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdDeleteRequest(token, questionId);
+            expect(res.status).toEqual(400);
+        });
+
+        it('Should return code 401: no token, Question to delete exists', async () => {
+
+            const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
+            token = "";
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdDeleteRequest(token, questionId);
+            expect(res.status).toEqual(401);
+        });
     });
-
-
 });
 
