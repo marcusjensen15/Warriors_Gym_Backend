@@ -9,7 +9,6 @@ function validateUser(user){
     });
 
     return userSchema.validate(user);
-
 };
 
 module.exports = validateUser;

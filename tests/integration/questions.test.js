@@ -167,7 +167,7 @@ describe('All Questions Routes', () => {
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesGetRequest(token, "nonExistantCategory");
-            expect(res.text).toEqual("There are no questions for this category");
+            expect(res.text).toEqual("There are no questions for this category.");
         });
 
         it('Should return error code 401: No token.', async () => {
@@ -206,7 +206,7 @@ describe('All Questions Routes', () => {
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
-            expect(res.text).toEqual('There is no question with this ID');
+            expect(res.text).toEqual('There is no question with this ID.');
         });
 
         it('Should return error code 400: Invalid token.', async () => {

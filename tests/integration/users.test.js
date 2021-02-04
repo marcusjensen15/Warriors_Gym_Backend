@@ -64,6 +64,13 @@ describe('All Users Routes ', () => {
             expect(res.status).toBe(200);
         });
 
+        it('Should return status 400 if user is already regestered', async () => {
+
+            const payload = {name:"A Test", email: "testUser@email.com", password: "123454"};
+            const res = await UsersTestingConstants.executeUsersPostRequest(payload);
+            expect(res.status).toBe(400);
+        });
+
         it('Should return status 400 if email is not included in request payload.', async () => {
 
             const payload = UsersTestingConstants.userPayloadMissingEmail;

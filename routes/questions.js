@@ -6,7 +6,7 @@ const {Question} = require('../schema/questionSchema');
 const authMiddleware = require('../middleware/auth');
 const manager = require('../middleware/manager');
 
-// GET questions of a given type:
+// GET questions of a given category:
 
 router.get('/:category', authMiddleware, async (req, res) => {
 
@@ -14,7 +14,7 @@ router.get('/:category', authMiddleware, async (req, res) => {
     let results = await Question.find({category: questionCategory });
 
     if (results.length === 0){
-        results = "There are no questions for this category"
+        results = "There are no questions for this category."
     }
     res.send(results);
 });
@@ -48,8 +48,6 @@ router.post('/', [authMiddleware, manager], async (req,res) => {
 
    const result = await question.save();
    res.send(question);
-
-
 });
 
 //GET a specific question:
@@ -67,10 +65,9 @@ router.get('/:category/:id', authMiddleware, async (req,res) => {
     }
 
     catch (error){
-        res.send("There is no question with this ID");
+        res.send("There is no question with this ID.");
     }
 });
-
 
 //PUT a specific question:
 
@@ -80,9 +77,11 @@ router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
 
     try {
         let question = await Question.findById(questionId);
+
         if (!question){
             throw new Error();
         }
+
         question.questionText = req.body.question;
         question.type = req.body.type;
         question.category = req.body.category;
@@ -97,13 +96,11 @@ router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
         }
 
         const result = await question.save();
-
-
         res.send(result);
     }
 
     catch (error){
-        res.send("There is no question with this ID");
+        res.send("There is no question with this ID.");
     }
 
 }); 
@@ -114,7 +111,6 @@ router.delete('/:category/:id', [authMiddleware, manager], async (req,res) => {
 
     const result = await Question.deleteOne({ _id: req.params.id });
     res.send("This question was successfully deleted.")
-  
 });
 
 module.exports = router;
