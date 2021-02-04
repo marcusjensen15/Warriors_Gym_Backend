@@ -75,6 +75,7 @@ describe('validateQuestion', () => {
 describe('validateUser', () => {
 
     it('Should correctly validate password existance within user object', () => {
+        
         const payload = UsersTestingConstants.userPayloadMissingPassword;
         const validate = validateUser(payload);
         expect(validate.error.details[0].message).toEqual("\"password\" is required");
