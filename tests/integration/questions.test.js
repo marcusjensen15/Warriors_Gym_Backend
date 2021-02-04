@@ -3,7 +3,7 @@ const {User} = require('../../schema/userSchema');
 const {Question} = require('../../schema/questionSchema');
 const QuestionsTestingConstants = require('../testingConstants/questionsTestingConstants');
 
-describe('All questions routes', () => {
+describe('All Questions Routes', () => {
 
     beforeEach(async () => {
         server = require('../../index');
@@ -27,19 +27,19 @@ describe('All questions routes', () => {
 
     describe('GET /questions', () => {
 
-        it('Should return error code 401 because we are trying to access the route with no token', async () => {
+        it('Should return error code 401 because we are trying to access the route with no token.', async () => {
             token = "";
             const res = await QuestionsTestingConstants.executeQuestionsGetRequest(token);
             expect(res.status).toEqual(401);
         });
 
-        it('Should return error code 400 if token is incorrect', async () => {
+        it('Should return error code 400 if token is incorrect.', async () => {
             token = "xyz";
             const res = await QuestionsTestingConstants.executeQuestionsGetRequest(token);
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 200 if presented with a valid token', async () => {
+        it('Should return code 200 if presented with a valid token.', async () => {
             const user = await User.findOne({email: 'testUser@email.com'});
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsGetRequest(token);
@@ -51,7 +51,7 @@ describe('All questions routes', () => {
 
     describe('POST: /questions', () => {
 
-        it('Should return error code 401 because we are trying to access the route with no token', async () => {
+        it('Should return error code 401 because we are trying to access the route with no token.', async () => {
 
             token = "";
             payload = QuestionsTestingConstants.completePayload;
@@ -59,7 +59,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(401);
         });
 
-        it('Should return error code 400 because we are trying to access the route with an invalid token', async () => {
+        it('Should return error code 400 because we are trying to access the route with an invalid token.', async () => {
 
             token = "xyz";
             payload = QuestionsTestingConstants.completePayload;
@@ -67,7 +67,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return error code 403 because we are trying to access the route with non-manager credentials', async () => {
+        it('Should return error code 403 because we are trying to access the route with non-manager credentials.', async () => {
 
             const user = await User.findOne({email: 'testUser@email.com'});
             token = user.generateAuthToken();
@@ -76,7 +76,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(403);
         });
 
-        it('Should return code 200 because we are making the request with manager credentials', async () => {
+        it('Should return code 200 because we are making the request with manager credentials.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -85,7 +85,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return code 400 because the payload is missing the question field', async () => {
+        it('Should return code 400 because the payload is missing the question field.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -94,7 +94,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload question is not 10 characters', async () => {
+        it('Should return code 400 because the payload question is not 10 characters.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -103,7 +103,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload is missing the type field', async () => {
+        it('Should return code 400 because the payload is missing the type field.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -112,7 +112,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload is missing the category field', async () => {
+        it('Should return code 400 because the payload is missing the category field.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -121,7 +121,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload is missing the possible answers array', async () => {
+        it('Should return code 400 because the payload is missing the possible answers array.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -130,7 +130,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload is not an array', async () => {
+        it('Should return code 400 because the payload is not an array.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -139,7 +139,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 400 because the payload is missing the correct answer', async () => {
+        it('Should return code 400 because the payload is missing the correct answer.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -153,7 +153,7 @@ describe('All questions routes', () => {
 
     describe('GET: /questions/:category', () => {
 
-        it('Should return error code 200: valid token', async () => {
+        it('Should return error code 200: Valid token.', async () => {
 
             const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -162,7 +162,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return error code 200: valid token, There are no questions for this category', async () => {
+        it('Should return error code 200: Valid token, There are no questions for this category.', async () => {
 
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
@@ -170,7 +170,7 @@ describe('All questions routes', () => {
             expect(res.text).toEqual("There are no questions for this category");
         });
 
-        it('Should return error code 401: no token', async () => {
+        it('Should return error code 401: No token.', async () => {
 
             const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             token = "";
@@ -178,7 +178,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(401);
         });
 
-        it('Should return error code 400: invalid token', async () => {
+        it('Should return error code 400: Invalid token.', async () => {
 
             const questionCategory = await (await Question.findOne(QuestionsTestingConstants.completePayload2)).category;
             token = "xyz";
@@ -191,7 +191,7 @@ describe('All questions routes', () => {
 
     describe('GET: /questions/:category/:id', () => {
 
-        it('Should return error code 200: valid token', async () => {
+        it('Should return error code 200: Valid token.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -200,7 +200,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return error code 200: There is no question with this ID', async () => {
+        it('Should return error code 200: There is no question with this ID.', async () => {
 
             const questionId = "fakeId"
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -209,7 +209,7 @@ describe('All questions routes', () => {
             expect(res.text).toEqual('There is no question with this ID');
         });
 
-        it('Should return error code 400: invalid token', async () => {
+        it('Should return error code 400: Invalid token.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             token = "xyz";
@@ -217,7 +217,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return error code 401: no token', async () => {
+        it('Should return error code 401: No token.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             token = "";
@@ -230,7 +230,7 @@ describe('All questions routes', () => {
 
     describe('GET: /questions/:category/:id', () => {
 
-        it('Should return code 200: valid token, valid payload', async () => {
+        it('Should return code 200: Valid token, valid payload.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -239,7 +239,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return error code 403: insufficient credentials (token), valid payload', async () => {
+        it('Should return error code 403: Insufficient credentials (token), valid payload.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testUser@email.com'});
@@ -248,7 +248,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(403);
         });
 
-        it('Should return error code 401: no token, valid payload', async () => {
+        it('Should return error code 401: No token, valid payload.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testUser@email.com'});
@@ -257,7 +257,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(401);
         });
 
-        it('Should return error code 400: no token, valid payload', async () => {
+        it('Should return error code 400: no token, valid payload.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testUser@email.com'});
@@ -266,7 +266,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return error code 400: valid token, invalid payload', async () => {
+        it('Should return error code 400: valid token, invalid payload.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload2))._id;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -280,7 +280,7 @@ describe('All questions routes', () => {
 
     describe('DELETE: /questions/:category/:id', () => {
 
-        it('Should return code 200: valid token with Manager Credentials, Question to delete exists', async () => {
+        it('Should return code 200: Valid token with Manager Credentials, Question to delete exists.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
             const user = await User.findOne({email: 'testManager@email.com'});
@@ -289,7 +289,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return code 403: valid token with Non-Manager Credentials, Question to delete exists', async () => {
+        it('Should return code 403: Valid token with Non-Manager Credentials, Question to delete exists.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
             const user = await User.findOne({email: 'testUser@email.com'});
@@ -298,7 +298,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(403);
         });
 
-        it('Should return code 400: invalid token, Question to delete exists', async () => {
+        it('Should return code 400: Invalid token, Question to delete exists.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
             token = "xyz";
@@ -306,7 +306,7 @@ describe('All questions routes', () => {
             expect(res.status).toEqual(400);
         });
 
-        it('Should return code 401: no token, Question to delete exists', async () => {
+        it('Should return code 401: No token, Question to delete exists.', async () => {
 
             const questionId = await (await Question.findOne(QuestionsTestingConstants.completePayload))._id;
             token = "";
