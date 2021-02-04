@@ -7,8 +7,7 @@ const validateLogin = require('../middleware/validateLogin');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-
-//POST a new user:
+//POST: Existing User Login
 
 router.post('/', async (req, res) => {
 

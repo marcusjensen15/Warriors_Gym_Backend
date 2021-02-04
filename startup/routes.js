@@ -9,20 +9,19 @@ const authMiddleware = require('../middleware/auth');
 
 module.exports = function(app) {
 
-//All questions routes:
+    //All questions routes:
 
-app.use('/questions', authMiddleware, questions);
+    app.use('/questions', authMiddleware, questions);
 
-//All users routes:
+    //All users routes:
 
-app.use('/users', users);
+    app.use('/users', users);
 
-//All auth routes:
+    //All auth routes:
 
-app.use('/auth', auth);
+    app.use('/auth', auth);
 
-//Catching server errors:
+    //Catching server errors:
 
-app.use(error);
-
+    app.use(error);
 };
