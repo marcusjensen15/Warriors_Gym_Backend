@@ -4,8 +4,6 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const {User} = require('../schema/userSchema');
 const validateUser = require('../middleware/validateUser');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/auth');
 const admin = require('../middleware/admin');
 

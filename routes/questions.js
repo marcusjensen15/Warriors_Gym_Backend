@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const validateQuestion = require('../middleware/validateQuestion');
-const mongoose = require('mongoose');
 const {Question} = require('../schema/questionSchema');
 const authMiddleware = require('../middleware/auth');
 const manager = require('../middleware/manager');
@@ -102,7 +101,6 @@ router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
     catch (error){
         res.send("There is no question with this ID.");
     }
-
 }); 
 
 //DELETE a specific question:

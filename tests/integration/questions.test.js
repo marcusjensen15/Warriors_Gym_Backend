@@ -1,4 +1,3 @@
-const request = require('supertest');
 const {User} = require('../../schema/userSchema');
 const {Question} = require('../../schema/questionSchema');
 const QuestionsTestingConstants = require('../testingConstants/questionsTestingConstants');
