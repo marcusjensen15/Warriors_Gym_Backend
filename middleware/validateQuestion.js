@@ -11,7 +11,6 @@ function validateQuestion(question){
     });
     
     return questionSchema.validate(question);
-
 };
 
 module.exports = validateQuestion;

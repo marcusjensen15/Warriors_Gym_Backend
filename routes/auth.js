@@ -1,11 +1,8 @@
 const express = require('express');
-const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const {User} = require('../schema/userSchema');
 const validateLogin = require('../middleware/validateLogin');
-const mongoose = require('mongoose');
-const Joi = require('joi');
 
 //POST: Existing User Login
 
