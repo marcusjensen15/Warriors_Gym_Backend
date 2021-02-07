@@ -1,5 +1,5 @@
-const {User} = require('../../schema/userSchema');
-const {Question} = require('../../schema/questionSchema');
+const {User} = require('../../models/user');
+const {Question} = require('../../models/question');
 const QuestionsTestingConstants = require('../testingConstants/questionsTestingConstants');
 
 describe('All Questions Routes', () => {

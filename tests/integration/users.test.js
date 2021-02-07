@@ -1,4 +1,4 @@
-const {User} = require('../../schema/userSchema');
+const {User} = require('../../models/user');
 const UsersTestingConstants = require('../testingConstants/usersTestingConstants');
 
 describe('All Users Routes ', () => {
