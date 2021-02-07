@@ -6,13 +6,13 @@
 
 1. Navigate to the cloned folder within terminal and run: `npm i`.
 
-2. Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey=<Input_Security_Key_Here>`. MAKE SURE THERE ARE NO SPACES.
+2. Before running application, you must set the JWT Private Key. To do this, navaigate to the project folder in terminal and enter: `export warriors_gym_jwtPrivateKey=<Input_Security_Key_Here>`. MAKE SURE THERE ARE NO SPACES. Example: `export warriors_gym_jwtPrivateKey=mySecurityKey`
 
 3. To run application, use `nodemon index.js`. This will auto start/stop the server.
 
 4. May need to start MongoDB in a seperate terminal if you don't already have it running as a background process (see instructions for that below).
 
-5. In a seperate terminal tab, you keep your testing enviornment ongoing by running `npm test`.
+5. In a seperate terminal tab, you can keep your testing enviornment ongoing by running `npm test`. This is recommended as you don't know how changes in code may break other modules. 
 
 ### Below is a guide to using the endpoints in Postman:
 
@@ -21,6 +21,7 @@
     2. Managers: Full: Create, Edit, Update, Delete functionality for Questions.
     3. Admin: Can get a list of all users, and delete specific users. 
     4. Note: The only un-protected route in this application is creating a new users. 
+    5. A user can be both an Admin and a Manager. 
 
 2. How to create a new account using Postman:
     1. Perform a 'POST' request in Postman to: http://localhost:3000/users. You must provide a name, email, and password.

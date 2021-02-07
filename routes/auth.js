@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
-const {User} = require('../schema/userSchema');
+const {User} = require('../models/user');
 const validateLogin = require('../middleware/validateLogin');
 
 //POST: Existing User Login

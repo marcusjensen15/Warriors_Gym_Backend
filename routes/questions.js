@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const validateQuestion = require('../middleware/validateQuestion');
-const {Question} = require('../schema/questionSchema');
+const {Question} = require('../models/question');
 const authMiddleware = require('../middleware/auth');
-const manager = require('../middleware/manager');
+const validateManager = require('../middleware/validateManager');
 
 // GET questions of a given category:
 
@@ -28,7 +28,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
 //POST a new question:
 
-router.post('/', [authMiddleware, manager], async (req,res) => {
+router.post('/', [authMiddleware, validateManager], async (req,res) => {
 
     const question = new Question({
         questionText: req.body.question,
@@ -70,7 +70,7 @@ router.get('/:category/:id', authMiddleware, async (req,res) => {
 
 //PUT a specific question:
 
-router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
+router.put('/:category/:id', [authMiddleware, validateManager], async (req,res) => {
 
     const questionId = req.params.id;
 
@@ -105,7 +105,7 @@ router.put('/:category/:id', [authMiddleware, manager], async (req,res) => {
 
 //DELETE a specific question:
 
-router.delete('/:category/:id', [authMiddleware, manager], async (req,res) => {
+router.delete('/:category/:id', [authMiddleware, validateManager], async (req,res) => {
 
     const result = await Question.deleteOne({ _id: req.params.id });
     res.send("This question was successfully deleted.")

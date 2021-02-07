@@ -2,14 +2,14 @@ const express = require('express');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const router = express.Router();
-const {User} = require('../schema/userSchema');
+const {User} = require('../models/user');
 const validateUser = require('../middleware/validateUser');
 const authMiddleware = require('../middleware/auth');
-const admin = require('../middleware/admin');
+const validateAdmin = require('../middleware/validateAdmin');
 
 //GET all users:
 
-router.get('/', [authMiddleware, admin], async (req, res) => {
+router.get('/', [authMiddleware, validateAdmin], async (req, res) => {
 
     const users = await User.find();
     res.send(users);
@@ -75,7 +75,7 @@ router.put('/me', authMiddleware, async (req,res) => {
 
 //DELETE a specific user: (In future we may want to only have admins be able to delete accoutns)
 
-router.delete('/:id', [authMiddleware, admin], async (req,res) =>{
+router.delete('/:id', [authMiddleware, validateAdmin], async (req,res) =>{
 
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).send('A user with that ID was not found');
