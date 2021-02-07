@@ -64,7 +64,7 @@ router.get('/:category/:id', authMiddleware, async (req,res) => {
     }
 
     catch (error){
-        res.send("There is no question with this ID.");
+        res.status(404).send("There is no question with this ID.");
     }
 });
 
@@ -99,7 +99,7 @@ router.put('/:category/:id', [authMiddleware, validateManager], async (req,res) 
     }
 
     catch (error){
-        res.send("There is no question with this ID.");
+        res.status(404).send("There is no question with this ID.");
     }
 }); 
 

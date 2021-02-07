@@ -199,13 +199,13 @@ describe('All Questions Routes', () => {
             expect(res.status).toEqual(200);
         });
 
-        it('Should return error code 200: There is no question with this ID.', async () => {
+        it('Should return error code 404: There is no question with this ID.', async () => {
 
             const questionId = "fakeId"
             const user = await User.findOne({email: 'testManager@email.com'});
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdGetRequest(token, questionId);
-            expect(res.text).toEqual('There is no question with this ID.');
+            expect(res.status).toEqual(404);
         });
 
         it('Should return error code 400: Invalid token.', async () => {
@@ -236,6 +236,15 @@ describe('All Questions Routes', () => {
             token = user.generateAuthToken();
             const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
             expect(res.status).toEqual(200);
+        });
+
+        it('Should return code 404: No question with this id', async () => {
+
+            const questionId = "fakeId"
+            const user = await User.findOne({email: 'testManager@email.com'});
+            token = user.generateAuthToken();
+            const res = await QuestionsTestingConstants.executeQuestionsCategoriesIdPutRequest(token, questionId, QuestionsTestingConstants.completePayload3 );
+            expect(res.status).toEqual(404);
         });
 
         it('Should return error code 403: Insufficient credentials (token), valid payload.', async () => {
