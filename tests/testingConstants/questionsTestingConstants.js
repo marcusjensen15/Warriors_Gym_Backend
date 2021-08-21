@@ -41,26 +41,23 @@ const executeQuestionsCategoriesIdDeleteRequest = (token, questionId) => {
 
 const completePayload = {
     question: "A new question",
-    type: "Type",
     category: "category",
     possibleAnswers: ["some good", "options", "here"],
-    correctAnswer: "options"
+    correctAnswerPosition: 1
 };
 
 const completePayload2 = {
     question: "A second new question",
-    type: "Type2",
     category: "category2",
     possibleAnswers: ["some good", "additional", "options", "here"],
-    correctAnswer: "additional"
+    correctAnswerPosition: 0
 };
 
 const completePayload3 = {
     question: "A third new question",
-    type: "Type3",
     category: "category3",
     possibleAnswers: ["some good", "additional", "options", "here"],
-    correctAnswer: "here"
+    correctAnswerPosition: 2
 };
 
 const payloadMissingQuestion = {
