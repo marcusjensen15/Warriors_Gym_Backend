@@ -32,10 +32,9 @@ router.post('/', [authMiddleware, validateManager], async (req,res) => {
 
     const question = new Question({
         questionText: req.body.question,
-        type: req.body.type,
         category: req.body.category,
         possibleAnswers: req.body.possibleAnswers,
-        correctAnswer: req.body.correctAnswer
+        correctAnswerPosition: req.body.correctAnswerPosition
    });
 
     const validQuestion = validateQuestion(req.body);

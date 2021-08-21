@@ -6,8 +6,8 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    type: {
-        type: String,
+    correctAnswerPosition: {
+        type: Number,
         required: true
     },
     category:  {
@@ -17,9 +17,6 @@ const questionSchema = new mongoose.Schema({
     possibleAnswers: {
         type: Array,
         required: true
-    },
-    correctAnser: {
-        type: String
     },
     date: { type: Date, default: Date.now}
 });
