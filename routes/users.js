@@ -75,7 +75,7 @@ router.put('/me', authMiddleware, async (req,res) => {
     user.email = newUser.email;
 
     await user.save();
-    
+
     res.send(_.pick(newUser, ['_id','name','email']));
 
 });
