@@ -53,24 +53,31 @@ router.post('/', async (req, res) => {
 
 router.put('/me', authMiddleware, async (req,res) => {
 
-    const user = await User.findById(req.user._id);
-    
+    const user = await User.findById(req.body._id);
+
     const newUser = {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password
     };
+
     const result = validateUser(newUser);
 
     if (result.error){
         res.status(400).send(result.error.details[0].message);
         return;
     }
+
+    const salt = await bcrypt.genSalt(10);
+
+    user.password = await bcrypt.hash(newUser.password, salt);
     user.name = newUser.name;
     user.email = newUser.email;
-    user.password = newUser.password;
-    res.send(newUser);
-    
+
+    await user.save();
+
+    res.send(_.pick(newUser, ['_id','name','email']));
+
 });
 
 //DELETE a specific user: (In future we may want to only have admins be able to delete accoutns)
