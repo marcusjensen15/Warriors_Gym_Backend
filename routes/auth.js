@@ -4,6 +4,7 @@ const router = express.Router();
 const {User} = require('../models/user');
 const validateLogin = require('../middleware/validateLogin');
 const authMiddleware = require('../middleware/auth');
+const validateAdmin = require('../middleware/validateAdmin');
 
 //POST: Existing User Login
 
@@ -35,6 +36,13 @@ router.post('/', async (req, res) => {
 router.post('/usertokenverification',authMiddleware, async (req, res) => {
     res.send(true);
 });
+
+//Validate that the user provided token is an admin
+
+router.post('/admintokenverification',[authMiddleware, validateAdmin], async (req, res) => {
+    res.send(true);
+});
+
 
 
 
